@@ -1,0 +1,13 @@
+name: Generative AI Demo
+run-name: Requirements Update
+on: [push]
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - run: echo "Starting Requirements Update"
+    - name: Check out repository
+      uses: actions/checkout@v4
+    - run: echo "Listing Directory"
+    - name: List Repository Files
+      run: ls -lR
+    - run: echo "*** Done ***"
