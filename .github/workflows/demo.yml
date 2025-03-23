@@ -13,7 +13,7 @@ jobs:
           python-version: "3.11"
       - name: Install packages
         run: |
-          pip install poetry
+          python -m pip install poetry
           poetry install
 
       - name: Perform extraction on Cameo model
