@@ -2,18 +2,6 @@ name: Generative AI Demo
 run-name: Requirements Update
 on: [push]
 jobs:
-  Python-Setup:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - name: Install packages
-        run: |
-          pip install poetry
-          poetry install
-
   Workflow-Setup:
     runs-on: ubuntu-latest
     steps:
@@ -23,9 +11,17 @@ jobs:
       - name: List Repository Files
         run: ls -lR
       - run: echo "*** Done ***"
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install packages
+        run: |
+          pip install poetry
+          poetry install
 
   Extract-Requirements:
-    needs: [Python-Setup, Workflow-Setup]
+    needs: [Workflow-Setup]
     runs-on: ubuntu-latest
     steps:
       - name: Perform extract on Cameo model
