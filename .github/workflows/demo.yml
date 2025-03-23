@@ -2,16 +2,17 @@ name: Generative AI Demo
 run-name: Requirements Update
 on: [push]
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-    - run: echo "Starting Requirements Update"
-    - name: Install packages
-      run: |
-      pip install poetry
-      poetry install
-    - name: Check out repository
-      uses: actions/checkout@v4
-    - run: echo "Listing Directory"
-    - name: List Repository Files
-      run: ls -lR
-    - run: echo "*** Done ***"
+  Workflow Setup:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Starting Requirements Update"
+      - name: Install packages
+        run: |
+          pip install poetry
+          poetry install
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - run: echo "Listing Directory"
+      - name: List Repository Files
+        run: ls -lR
+      - run: echo "*** Done ***"
