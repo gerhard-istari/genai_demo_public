@@ -2,17 +2,34 @@ name: Generative AI Demo
 run-name: Requirements Update
 on: [push]
 jobs:
-  Workflow-Setup:
+  Python-Setup:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Starting Requirements Update"
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
       - name: Install packages
         run: |
           pip install poetry
           poetry install
+
+  Workflow-Setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
       - run: echo "Listing Directory"
       - name: List Repository Files
         run: ls -lR
       - run: echo "*** Done ***"
+
+  Extract-Requirements:
+    needs: [Python-Setup, Workflow-Setup]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Perform extract on Cameo model
+        run: echo "Extracting requirements from Cameo model ..."
+      - name: Download extraction artifacts
+        run: echo "Downloading Cameo extraction artifacts ..."
+
