@@ -7,10 +7,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - run: echo "Listing Directory"
-      - name: List Repository Files
-        run: ls -lR
-      - run: echo "*** Done ***"
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -20,17 +16,9 @@ jobs:
           pip install poetry
           poetry install
 
-  Extract-Requirements:
-    needs: [Workflow-Setup]
-    runs-on: ubuntu-latest
-    steps:
       - name: Perform extraction on Cameo model
         run: python components/extract_requirements.py
 
-  Extract-Parameters:
-    needs: [Workflow-Setup]
-    runs-on: ubuntu-latest
-    steps:
       - name: Perform extraction on 3DX model
         run: python components/extract_parameters.py
 
