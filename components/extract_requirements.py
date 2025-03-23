@@ -1,4 +1,6 @@
 from istari import Client, Configuration
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from shared.helpers import get_client
 from shared.constants import CAMEO_MODEL_ID, REQ_FILE_NAME
 
