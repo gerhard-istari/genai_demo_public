@@ -17,8 +17,8 @@ jobs:
           poetry install
 
       - name: Perform extraction on Cameo model
-        run: poetry run components/extract_requirements.py
+        run: poetry run python components/extract_requirements.py
 
       - name: Perform extraction on 3DX model
-        run: poetry run components/extract_parameters.py
+        run: poetry run python components/extract_parameters.py
 
