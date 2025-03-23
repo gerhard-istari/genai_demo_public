@@ -2,7 +2,7 @@ name: Generative AI Demo
 run-name: Requirements Update
 on: [push]
 jobs:
-  Workflow Setup:
+  Workflow-Setup:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Starting Requirements Update"
