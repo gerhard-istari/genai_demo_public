@@ -1,5 +1,7 @@
 name: Generative AI Demo
 run-name: Workflow Setup
+on:
+  workflow_call:
 jobs:
   Workflow-Setup:
     runs-on: ubuntu-latest
