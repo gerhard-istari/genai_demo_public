@@ -4,7 +4,7 @@ on: [push]
 jobs:
   Extract-Requirements:
     runs-on: ubuntu-latest
-    uses: ./.github/workflows/install.yml@main
+    uses: ./.github/workflows/install.yml
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -13,7 +13,7 @@ jobs:
 
   Extract-Parameters:
     runs-on: ubuntu-latest
-    uses: ./.github/workflows/install.yml@main
+    uses: ./.github/workflows/install.yml
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
