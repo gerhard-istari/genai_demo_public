@@ -17,12 +17,14 @@ jobs:
           poetry install
 
   Extract-Requirements:
+    runs-on: ubuntu-latest
     needs: [Workflow-Setup]
     steps:
       - name: Perform extraction on Cameo model
         run: poetry run python components/extract_requirements.py
 
   Extract-Parameters:
+    runs-on: ubuntu-latest
     needs: [Workflow-Setup]
     steps:
       - name: Perform extraction on 3DX model
