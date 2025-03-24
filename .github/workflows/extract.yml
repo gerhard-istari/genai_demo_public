@@ -4,21 +4,19 @@ on: [push]
 jobs:
   Extract-Requirements:
     runs-on: ubuntu-latest
+    uses: ./.github/workflows/install.yml@main
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Initialize
-        uses: ./.github/workflows/install.yml@main
       - name: Perform extraction on Cameo model
         run: poetry run python components/extract_requirements.py
 
   Extract-Parameters:
     runs-on: ubuntu-latest
+    uses: ./.github/workflows/install.yml@main
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Initialize
-        uses: ./.github/workflows/install.yml@main
       - name: Perform extraction on 3DX model
         run: poetry run python components/extract_parameters.py
 
