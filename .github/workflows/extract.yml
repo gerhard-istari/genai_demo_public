@@ -12,7 +12,6 @@ jobs:
 
   Extract-Parameters:
     runs-on: ubuntu-latest
-    uses: ./.github/workflows/setup.yml
     steps:
       - name: Initialize
         uses: ./.github/workflows/setup.yml
