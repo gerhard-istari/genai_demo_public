@@ -1,4 +1,4 @@
-name: Generative AI Demo
+name: install
 run-name: Workflow Setup
 on:
   workflow_call:
