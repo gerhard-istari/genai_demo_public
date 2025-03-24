@@ -16,9 +16,15 @@ jobs:
           python -m pip install poetry
           poetry install
 
+  Extract-Requirements:
+    needs: [Workflow-Setup]
+    steps:
       - name: Perform extraction on Cameo model
         run: poetry run python components/extract_requirements.py
 
+  Extract-Parameters:
+    needs: [Workflow-Setup]
+    steps:
       - name: Perform extraction on 3DX model
         run: poetry run python components/extract_parameters.py
 
