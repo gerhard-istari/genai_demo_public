@@ -5,6 +5,8 @@ jobs:
   Extract-Requirements:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
       - name: Initialize
         uses: ./.github/workflows/install.yml@main
       - name: Perform extraction on Cameo model
@@ -13,6 +15,8 @@ jobs:
   Extract-Parameters:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
       - name: Initialize
         uses: ./.github/workflows/install.yml@main
       - name: Perform extraction on 3DX model
