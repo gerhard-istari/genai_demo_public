@@ -4,8 +4,9 @@ on: [push]
 jobs:
   Extract-Requirements:
     runs-on: ubuntu-latest
-    uses: ./.github/workflows/setup.yml
     steps:
+      - name: Initialize
+        uses: ./.github/workflows/setup.yml
       - name: Perform extraction on Cameo model
         run: poetry run python components/extract_requirements.py
 
@@ -13,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     uses: ./.github/workflows/setup.yml
     steps:
+      - name: Initialize
+        uses: ./.github/workflows/setup.yml
       - name: Perform extraction on 3DX model
         run: poetry run python components/extract_parameters.py
 
