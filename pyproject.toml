@@ -9,8 +9,8 @@ package-mode = false
 python = "^3.11,<3.13"
 pydantic = "^2.7.0"
 argparse = "^1.4.0"
-istari-client = { version = "4.1.0", source = "istari" }
-istari-python = { version = "3.1.2", source = "istari" }
+prettytable = "=3.16.0"
+istari-digital-client = "6.4.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"

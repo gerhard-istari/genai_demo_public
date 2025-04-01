@@ -201,18 +201,6 @@ files = [
 license = ["ukkonen"]
 
 [[package]]
-name = "inflection"
-version = "0.5.1"
-description = "A port of Ruby on Rails inflector to Python"
-optional = false
-python-versions = ">=3.5"
-groups = ["main"]
-files = [
-    {file = "inflection-0.5.1-py2.py3-none-any.whl", hash = "sha256:f38b2b640938a4f35ade69ac3d053042959b62a0f1076a5bbaa1b9526605a8a2"},
-    {file = "inflection-0.5.1.tar.gz", hash = "sha256:1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417"},
-]
-
-[[package]]
 name = "isort"
 version = "5.13.2"
 description = "A Python utility / library to sort Python imports."
@@ -228,105 +216,97 @@ files = [
 colors = ["colorama (>=0.4.6)"]
 
 [[package]]
-name = "istari-client"
-version = "4.1.0"
-description = ""
+name = "istari-digital-client"
+version = "6.4.0"
+description = "Python client for the Istari Digital platform"
 optional = false
-python-versions = ">=3.10,<4.0"
+python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "istari_client-4.1.0-py3-none-any.whl", hash = "sha256:7c20e839d1bbcbcf458647f58c10cf9da1ef43ce04beb4e3da7904c33a71737c"},
-    {file = "istari_client-4.1.0.tar.gz", hash = "sha256:0c223888b4bb69951ffaaa366cc214419c1f62518a54b3a05d42e98df5f76e95"},
+    {file = "istari_digital_client-6.4.0-py3-none-any.whl", hash = "sha256:df64bc8f5f1f83188f1f28956a4cd71f7177d2d70f5c149e4574f1c546b38512"},
+    {file = "istari_digital_client-6.4.0.tar.gz", hash = "sha256:879a25513e2aaa4f5f7094eff1dbe72aab37932c15467f836302b5e0631a7069"},
 ]
 
 [package.dependencies]
 deprecation = ">=2.1.0,<3.0.0"
-inflection = ">=0.5.1,<0.6.0"
-istari-python = "3.1.2"
+istari-digital-core = ">=5.2.2,<6.0.0"
 pydantic = ">=2.9.0,<3.0.0"
 python-dateutil = ">=2.9.0.post0,<3.0.0"
 python-dotenv = ">=1.0.1,<2.0.0"
 setuptools = ">=74.1.2,<75.0.0"
-strenum = ">=0.4.15,<0.5.0"
 types-python-dateutil = ">=2.9.0.20240906,<3.0.0.0"
 typing-extensions = ">=4.12.2,<5.0.0"
 urllib3 = ">=2.2.2,<3.0.0"
 
-[package.source]
-type = "legacy"
-url = "https://automation.cs@istaridigital.com:cmVmdGtuOjAxOjE3NTk4NTc5ODA6UEYxS2hRZWMzRmRoRlBXOUE4cVhtelFLdE1N@istaridigital.jfrog.io/artifactory/api/pypi/main-pypi-local/simple"
-reference = "istari"
-
 [[package]]
-name = "istari-python"
-version = "3.1.2"
-description = ""
+name = "istari-digital-core"
+version = "5.2.2"
+description = "Python bindings for the Istari Digital platform"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "istari_python-3.1.2-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2521c99f9e4a62d05774057d38db98cb237fe6b274b69f8402594f016d20ff30"},
-    {file = "istari_python-3.1.2-cp310-cp310-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:0faca6a0c1512e11aaf020f36edce57d9b42871ef8abdcc1beab25bc9222441f"},
-    {file = "istari_python-3.1.2-cp310-cp310-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:0c33f8788d0de2a59d0b61c9994dd48cee3159a66636b69f59f358024a46dd66"},
-    {file = "istari_python-3.1.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5143a2225ee0bdfa793a53c49b44a366a13fd1511ae9f33372eaf4f1197ddbe1"},
-    {file = "istari_python-3.1.2-cp310-cp310-win32.whl", hash = "sha256:5dd91793e057f8ee5f00cf1e19ccfedec70851b8e2fe4aa7a79c13f8830623ff"},
-    {file = "istari_python-3.1.2-cp310-cp310-win_amd64.whl", hash = "sha256:10a3eab7bfba47fa8f8413ba18a8834181654c1b212a44a5d491373e9d478454"},
-    {file = "istari_python-3.1.2-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:6681bbb0b148ae94e5fd32bccc8e220b410063267330f845e9806f72ff7ae367"},
-    {file = "istari_python-3.1.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:b4b7e3d1264bc4b96224261942e99b310f154af7f3b2ce50396e817077c3e00e"},
-    {file = "istari_python-3.1.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6b4cfcd8248c75d1e569025b0299402759152bc94284f6ebcb6f8e0b1345dca8"},
-    {file = "istari_python-3.1.2-cp311-cp311-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:37e35abd746cea48f2f3fa7be0dec91eabc3a4928551365a256828b5ce749a6a"},
-    {file = "istari_python-3.1.2-cp311-cp311-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:0af7ad795b852dc08964d02caaca03409110d1e2761968e3104088fc559820f3"},
-    {file = "istari_python-3.1.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ae4da37db072f5bf414a5facae4f9817c9ae9577c4eccf24d923d40e95ba6d95"},
-    {file = "istari_python-3.1.2-cp311-cp311-win32.whl", hash = "sha256:21e783eb6fb0289f0d46cb4e1b803430335fdb3bbfff88f052a27ab171f42cc8"},
-    {file = "istari_python-3.1.2-cp311-cp311-win_amd64.whl", hash = "sha256:4ff49171e87a194f0d7a68be7c8e8205771d7696512274c99b3d58df9b8e1b9e"},
-    {file = "istari_python-3.1.2-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:3930ea1586b21ad8aad82f0481b40ebeec42968b9d9bba18b1d0f9aa08c2b6d8"},
-    {file = "istari_python-3.1.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:81b9e5b44fdb382a758c5ec9769c2ebcf2afd703f7c6bf3fb8096d86d98f3119"},
-    {file = "istari_python-3.1.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:416567a587e53dcdc7550aa05400eccc2c8446bd4af8f42f7e07bda56723d03e"},
-    {file = "istari_python-3.1.2-cp312-cp312-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:0ed9b4994ba3e979cf08145142b203010bb97cffc93cd15c0b51d09e4b685b3a"},
-    {file = "istari_python-3.1.2-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:0c7f09878df030767db015f6a45355cb7aba7a0a625de2842fa5145a4ad36bdd"},
-    {file = "istari_python-3.1.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d3d1e09a4284a7113d8294c1f1660c5d23ad5c6d5c339cde4bcf21085740fd0d"},
-    {file = "istari_python-3.1.2-cp312-cp312-win32.whl", hash = "sha256:8c66c72529ed77b484774b69dc26a441329d651158d67e7972ba6c36bc0f7c15"},
-    {file = "istari_python-3.1.2-cp312-cp312-win_amd64.whl", hash = "sha256:d1baf89a5283f33312ddd9d7eabd5d00a4f3ec85da6a20888d11573f857305e1"},
-    {file = "istari_python-3.1.2-cp313-cp313-macosx_10_12_x86_64.whl", hash = "sha256:67d69f3773af65c9b2cd7f6ddd42434b7c45291c0f148016700ca18317f9e93b"},
-    {file = "istari_python-3.1.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:4e81266e14dc810e98e4fce5a942f2c3c46964d8aa5ce7f1d429b9e0d779e490"},
-    {file = "istari_python-3.1.2-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:601e45810174ed45b03ab70aac0448dd4ab8c91a0a1270a8e0e563f2ce12e3bb"},
-    {file = "istari_python-3.1.2-cp313-cp313-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:ef9b83aef9144e4e22d9c850f5b351827bb57083d584b730a78377aaf704022d"},
-    {file = "istari_python-3.1.2-cp313-cp313-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:a2a3273ca5523524bfd06b0463b37ba7d0e68df1082be3b019cc46b2762abfe8"},
-    {file = "istari_python-3.1.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:86fc75c2d6962a9d0cd308b015f30da34dabb9a611f2bf596b840d8cb2fe8192"},
-    {file = "istari_python-3.1.2-cp313-cp313t-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5a369b85b1905808e86b3d4cb8d53d043f81290d78ac24002b123da24d3065e9"},
-    {file = "istari_python-3.1.2-cp313-cp313t-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:19f1ef5e8dcce1805d96a4a738652f2b567b7cd0e53cde42771f08bcdc3da70d"},
-    {file = "istari_python-3.1.2-cp313-cp313t-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:46b41e00a15b3f43a85cb10c0286b2433cf7f4a048ded96878888c6ef71f18b2"},
-    {file = "istari_python-3.1.2-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f997ca29e31a8179f9387fb3f7b5e42c14e48ca0159d3c6d295129923245406f"},
-    {file = "istari_python-3.1.2-cp37-cp37m-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:440e3f1ea22d2545258e47016a0ec2b3ef92fab9c44e746a074c810f3dc74a3e"},
-    {file = "istari_python-3.1.2-cp37-cp37m-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:dda780e8a9e18f5c6ee9f6aa33f89ad501d653fccc81cefb56ee652a4c3785d9"},
-    {file = "istari_python-3.1.2-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:42671f5d3af9bf74c73795ae774bd9ab6bf59caa5ef6ad2346ac57e10296ec20"},
-    {file = "istari_python-3.1.2-cp37-cp37m-win32.whl", hash = "sha256:d7da5dd2fb5031d994eead7ed0db7cacafc3f9dfb138985cf53964e2a4f8bfd3"},
-    {file = "istari_python-3.1.2-cp37-cp37m-win_amd64.whl", hash = "sha256:9d98ffb583f07e0cd4cac71720f33b81cb2a52d7f083e2b5ddc6b3609e8caad5"},
-    {file = "istari_python-3.1.2-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:83b97773b9909cbe2b7013dcaef52c49b581e91aded383fd3e4adfcedc2bc358"},
-    {file = "istari_python-3.1.2-cp38-cp38-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:6dd61e4aa5a9406f41a85c4691bcf8cb1e3ecbd979283d43e4dc80247f25aa50"},
-    {file = "istari_python-3.1.2-cp38-cp38-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:ec3e9653a5861f9970abaffafa3405af75c7580b98b44c59cb6f95a169b02567"},
-    {file = "istari_python-3.1.2-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9a4a963a46a4d692be189eb3720000dd755e022431bacdf579cccb6f374b753f"},
-    {file = "istari_python-3.1.2-cp38-cp38-win32.whl", hash = "sha256:2f21c2ae8c1185c23e40ad990dfd6266a924506846e4c54a2dd0a3885d5bab30"},
-    {file = "istari_python-3.1.2-cp38-cp38-win_amd64.whl", hash = "sha256:cedc95174b6aeca3e38b41fa78d5f20995e4dbb326b7654fc37af8910cfe0346"},
-    {file = "istari_python-3.1.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:362d023f7069c790721c7a8765bfed75e31b40d3beb241a485a04a84e310480f"},
-    {file = "istari_python-3.1.2-cp39-cp39-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:dc24a2a71dbd344dad5bc4f624849211304c519bc40de3493ce843c891aa4cec"},
-    {file = "istari_python-3.1.2-cp39-cp39-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:dc5e64dadd004c7bb057f7bacec4e0f650b7ceb708df5647685a952703b88d94"},
-    {file = "istari_python-3.1.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1e5afdcdc8380630187dd0ccc2862425c410510516c2ea7c051a593918a59b13"},
-    {file = "istari_python-3.1.2-cp39-cp39-win32.whl", hash = "sha256:05057bd238ccf7eb87d160ab03ddae7360df5d2169f619926ca262d67ffcb5c2"},
-    {file = "istari_python-3.1.2-cp39-cp39-win_amd64.whl", hash = "sha256:88a02bfd633c45f21a37f10a7c10d4b42649fa2e819b7593b51f95902cbeb98e"},
-    {file = "istari_python-3.1.2-pp310-pypy310_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e38889b1538d22d0ea70a47e375b6424710bf06c65e74fc5d42e5356424436af"},
-    {file = "istari_python-3.1.2-pp310-pypy310_pp73-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:8f053d3c196f7529a0bca24444b791d445c46e183d1247c335127e9dd070b738"},
-    {file = "istari_python-3.1.2-pp310-pypy310_pp73-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:fc2a11bcd5e29a6f721f737e2175ca86e94d255b1fc75e035fb0743732c1ad69"},
-    {file = "istari_python-3.1.2-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3127181f88896e2ef7e37cfbb04e235508125df494af3dadcfb9e823b6da9401"},
-    {file = "istari_python-3.1.2-pp39-pypy39_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:cb9c2cfa674bb82bd7dc211b623175b0a4a48c0f9189a80ce89e59f90b71860a"},
-    {file = "istari_python-3.1.2-pp39-pypy39_pp73-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:e044a4c0e8caece6febb6ea023c78c01af0bba2225121d3fdfa686e8ac5a0033"},
-    {file = "istari_python-3.1.2-pp39-pypy39_pp73-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:0acc02013e29aee0a9d189523fb5ce816d2cddad3173ca6e1409392d537ff60f"},
+    {file = "istari_digital_core-5.2.2-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f3ee370ab7d9b1cb2d68a66d6f70813efd3e22bef78b722b8dd3ccaa7d1a95f7"},
+    {file = "istari_digital_core-5.2.2-cp310-cp310-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:b74c2b3777b3d45341eded8b7bc9c9be28722e8dbd5cb9a22717da6d3c2ccc35"},
+    {file = "istari_digital_core-5.2.2-cp310-cp310-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:f4796a2ef282f2d40066ed46c3febe041c5730175e28f99200f8f41cd9830f12"},
+    {file = "istari_digital_core-5.2.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:310b39afb37d3c8b0e186850b1bb21231d5de5d428d2fedab1abd02f930ff38f"},
+    {file = "istari_digital_core-5.2.2-cp310-cp310-win32.whl", hash = "sha256:347bfb123ca24d19d87400b5525358dc6471d0778db5415a74f725e34fa05ca0"},
+    {file = "istari_digital_core-5.2.2-cp310-cp310-win_amd64.whl", hash = "sha256:784e4d1a0f581e92172cc99506dc5ec878946d43b294de3102d9b29f8186db8c"},
+    {file = "istari_digital_core-5.2.2-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:6cd5a94965d201b22035d18746429f692374f60aaa48e281cbf305d37ea5edd2"},
+    {file = "istari_digital_core-5.2.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:baaeb1c2fb3af9a3159516fda7573002c7253da5f22936982ef049823bec4a0a"},
+    {file = "istari_digital_core-5.2.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:04ff37c0cf3d755bf0c7b4ea982fce14c3d6e566cf7c511e32b648664bde3837"},
+    {file = "istari_digital_core-5.2.2-cp311-cp311-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:6c8090817b9b6258b46a15567a175df9367520467476668d2305172ddd361248"},
+    {file = "istari_digital_core-5.2.2-cp311-cp311-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:636e6114e33f6aa749cd242e1195d0cb29f9c3a2090704345f0020c3727a388e"},
+    {file = "istari_digital_core-5.2.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a9e856b6eb61a08f2d706f7251bb3aec257fce6cce1bd9b6841ab7e63ac11465"},
+    {file = "istari_digital_core-5.2.2-cp311-cp311-win32.whl", hash = "sha256:5537987942382af86c8fe8bdd3bb07f89df944ecbced809c3fe7f10bb8d057ae"},
+    {file = "istari_digital_core-5.2.2-cp311-cp311-win_amd64.whl", hash = "sha256:295a15d2af9201123fade78d5947c279fa2b2a7073f1aa4928ad395f9cf05a86"},
+    {file = "istari_digital_core-5.2.2-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:301e078103581da2d4bceaddfb914e2e8f229cb4f7846fd9f874b0213d63bf0f"},
+    {file = "istari_digital_core-5.2.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:0011fd5d46a58b9d0942e31dd955ef8b441569328235725ef2484d8992c58a47"},
+    {file = "istari_digital_core-5.2.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7bb57d1b63aa994c8793deef25327d208be5d1410ebb8e282e26359072c0e560"},
+    {file = "istari_digital_core-5.2.2-cp312-cp312-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:3df5880da69add819bbe6543fcc514f1bbaa60f9eb4b6430aa832ab46163837e"},
+    {file = "istari_digital_core-5.2.2-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:dbeadf5475086fb9ff2b05ceb35b2ee715b17b2aa050661b7ea732635adac3c6"},
+    {file = "istari_digital_core-5.2.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7c9ea250af77423b4b409da5352764d345effd2dd6237aa06f205c8e8bdd91bb"},
+    {file = "istari_digital_core-5.2.2-cp312-cp312-win32.whl", hash = "sha256:f0ab690b3947c6262f5f385f480f931019865bef9ec59d61ac2cf75e70ac172c"},
+    {file = "istari_digital_core-5.2.2-cp312-cp312-win_amd64.whl", hash = "sha256:e0bc428c255c7ce2316a89a447c0735e63e56d13bb2194a3d209f24f3a118346"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313-macosx_10_12_x86_64.whl", hash = "sha256:ea07da637dc41979802d134acb51e6dab5025833720f44287b16628ce184ad37"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:50dd618cde1c6f61a2a2dad95f91c60637b25792925245dfcd3b49bbf81e4894"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:49191731284e89a31a12e6b999cc258f1403383aa6f30db35b5623214ae25dbb"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:8209b8b6c72827829e4e8e179237aa00add5bd89cbd883cbbc3c32f0fe30e837"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:3e66c5681c4021e8332b56c4c37c189d99527aaa001b8ee6381507c495ec489a"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b98a3359ca48127d212312b1b2ae6abd668b9a74198a6ad8fd8c511f662305ae"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313-win32.whl", hash = "sha256:6ee41eec77444c6011bb45da55e96a9261c7abb526c073b9815b51124bf4c295"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313-win_amd64.whl", hash = "sha256:1756d0134945c7ec6130d017357156186d9139e45d8a427ea0cd9f4eb62a283c"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313t-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0496d7e83c6941a811e59731d8032a564500dd7e8a3802dfdfd1eccdd1d9777a"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313t-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:016210e75cfff3789012b4f920f342225751e51db7e8147f4e0c431d669acab6"},
+    {file = "istari_digital_core-5.2.2-cp313-cp313t-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:1005ee67352cd8a084a6e2fa36a7e947172fec6073cd36d2ee97014a6044ace3"},
+    {file = "istari_digital_core-5.2.2-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:90623456c3257ec126791646bb8f5d5d6c035a381ef87a2e0cb7876a768b2887"},
+    {file = "istari_digital_core-5.2.2-cp37-cp37m-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:ce8d12436adf7edefc68dfa16aa01feaa04638143ebd971442007b976db785ad"},
+    {file = "istari_digital_core-5.2.2-cp37-cp37m-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:5172f086ca90bc51020514bf6c11e989cf83c0a21344955359bac71961e456a8"},
+    {file = "istari_digital_core-5.2.2-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cc3bf9488e3ccffb8a31ab7c3e833fa8635e8a6f427a5b3171f518c91fa3491f"},
+    {file = "istari_digital_core-5.2.2-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ad7dc7f7b96b8e221282e9c584ba9eaa06ac122e89f5752ce334fbbc5d4d3b19"},
+    {file = "istari_digital_core-5.2.2-cp38-cp38-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:84daf16066c9dc69a68a6348c9794ed47c67b4128ada7389855713a6ea60df74"},
+    {file = "istari_digital_core-5.2.2-cp38-cp38-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:df0bcbe37431c0ecc33271ec5871cba8fb5fd46992b9895084b263b1d74742b5"},
+    {file = "istari_digital_core-5.2.2-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9a626bc8159b8c71cd4a59d3bd54299c8ddbbb6bbb5f7b0917d275992d9826d5"},
+    {file = "istari_digital_core-5.2.2-cp38-cp38-win32.whl", hash = "sha256:6d57452671fe4a6f031d8c6ad2dd10687ad1e3272814f3d3f2fd1a84921fd3a3"},
+    {file = "istari_digital_core-5.2.2-cp38-cp38-win_amd64.whl", hash = "sha256:ed148707af51ad950b85c389b8560a17d0cb39d15aea7a75c45d51d3a0d61a27"},
+    {file = "istari_digital_core-5.2.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c5823abc14e0608d21ed6f75b7dbd5596ca338f478a3cf96cd78b8898a89d367"},
+    {file = "istari_digital_core-5.2.2-cp39-cp39-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:88dd0fba2936434e245660bc2b8fde57167d811567b7bd3faec48dfbead7c0de"},
+    {file = "istari_digital_core-5.2.2-cp39-cp39-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:3ad4cda1efe42e9a8452e9975433a3a80fc041c7cbbc9e89702658f158a74278"},
+    {file = "istari_digital_core-5.2.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0ab66a0ad30ddf2ee0f656b1ce994bf38ca69edd2d4bec15f632954d346ded7a"},
+    {file = "istari_digital_core-5.2.2-cp39-cp39-win32.whl", hash = "sha256:43ac83a335f27fe5924aecd372ffa09becf81339b5fb4a95aa9e16041cfd4e1b"},
+    {file = "istari_digital_core-5.2.2-cp39-cp39-win_amd64.whl", hash = "sha256:92ef21952654a750cc1805b2e092765fa6401cc1e8122d2b81a11b1bcb85e38e"},
+    {file = "istari_digital_core-5.2.2-pp310-pypy310_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4a1bd29916f2d4425c8a4b354d7084b8fa7e1010fe369832842b7ccb9be5750c"},
+    {file = "istari_digital_core-5.2.2-pp310-pypy310_pp73-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:d16fb211f269b4e8c294e9a1cdd40ee491b4c4195beaeb9d00538ec0aae814e1"},
+    {file = "istari_digital_core-5.2.2-pp310-pypy310_pp73-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:a47b1fabe8e705ae3d26946ee2a5492ec0e623d186272f453bce0e36fd3ba99f"},
+    {file = "istari_digital_core-5.2.2-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:331ac339d99064cf819a30d060ff293a2f0c49c749b8376af894c92f127c295e"},
+    {file = "istari_digital_core-5.2.2-pp311-pypy311_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:070bed622adb402da1f4d7cee47c75912930dd172b6491e172dce8e62bf095e4"},
+    {file = "istari_digital_core-5.2.2-pp311-pypy311_pp73-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:d47191cc6049f65b1ae83ccca34022a81da37cb026e9e121dc038364455b8cbc"},
+    {file = "istari_digital_core-5.2.2-pp311-pypy311_pp73-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:32b82014f809abeac1c49ffe6d3e3dd5cf60cfc1205e53fbcd5eecf9354080b9"},
+    {file = "istari_digital_core-5.2.2-pp311-pypy311_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:28c92390253f086daf024533504b08fbb330ff2e0c6f17405ec01eeccb60daab"},
+    {file = "istari_digital_core-5.2.2-pp39-pypy39_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4fd0352971b3f511b8e6f9b968fc6d786e1d7f3b2eef3e116e4076235232acca"},
+    {file = "istari_digital_core-5.2.2-pp39-pypy39_pp73-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:e4d57ce544ddabdb3bd75def51a45d3812c05b10001710370e8b7216117a9081"},
+    {file = "istari_digital_core-5.2.2-pp39-pypy39_pp73-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:7eda8099195b76ce22a17119305a9dd3201ba2e18416fcb396b9d3470979312b"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://automation.cs@istaridigital.com:cmVmdGtuOjAxOjE3NTk4NTc5ODA6UEYxS2hRZWMzRmRoRlBXOUE4cVhtelFLdE1N@istaridigital.jfrog.io/artifactory/api/pypi/main-pypi-local/simple"
-reference = "istari"
 
 [[package]]
 name = "mccabe"
@@ -507,6 +487,24 @@ identify = ">=1.0.0"
 nodeenv = ">=0.11.1"
 pyyaml = ">=5.1"
 virtualenv = ">=20.10.0"
+
+[[package]]
+name = "prettytable"
+version = "3.16.0"
+description = "A simple Python library for easily displaying tabular data in a visually appealing ASCII table format"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "prettytable-3.16.0-py3-none-any.whl", hash = "sha256:b5eccfabb82222f5aa46b798ff02a8452cf530a352c31bddfa29be41242863aa"},
+    {file = "prettytable-3.16.0.tar.gz", hash = "sha256:3c64b31719d961bf69c9a7e03d0c1e477320906a98da63952bc6698d6164ff57"},
+]
+
+[package.dependencies]
+wcwidth = "*"
+
+[package.extras]
+tests = ["pytest", "pytest-cov", "pytest-lazy-fixtures"]
 
 [[package]]
 name = "pycodestyle"
@@ -793,23 +791,6 @@ files = [
 ]
 
 [[package]]
-name = "strenum"
-version = "0.4.15"
-description = "An Enum that inherits from str."
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "StrEnum-0.4.15-py3-none-any.whl", hash = "sha256:a30cda4af7cc6b5bf52c8055bc4bf4b2b6b14a93b574626da33df53cf7740659"},
-    {file = "StrEnum-0.4.15.tar.gz", hash = "sha256:878fb5ab705442070e4dd1929bb5e2249511c0bcf2b0eeacf3bcd80875c82eff"},
-]
-
-[package.extras]
-docs = ["myst-parser[linkify]", "sphinx", "sphinx-rtd-theme"]
-release = ["twine"]
-test = ["pylint", "pytest", "pytest-black", "pytest-cov", "pytest-pylint"]
-
-[[package]]
 name = "tomli"
 version = "2.2.1"
 description = "A lil' TOML parser"
@@ -914,7 +895,19 @@ platformdirs = ">=3.9.1,<5"
 docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.2,!=7.3)", "sphinx-argparse (>=0.4)", "sphinxcontrib-towncrier (>=0.2.1a0)", "towncrier (>=23.6)"]
 test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7)", "packaging (>=23.1)", "pytest (>=7.4)", "pytest-env (>=0.8.2)", "pytest-freezer (>=0.4.8) ; platform_python_implementation == \"PyPy\" or platform_python_implementation == \"CPython\" and sys_platform == \"win32\" and python_version >= \"3.13\"", "pytest-mock (>=3.11.1)", "pytest-randomly (>=3.12)", "pytest-timeout (>=2.1)", "setuptools (>=68)", "time-machine (>=2.10) ; platform_python_implementation == \"CPython\""]
 
+[[package]]
+name = "wcwidth"
+version = "0.2.13"
+description = "Measures the displayed width of unicode strings in a terminal"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "wcwidth-0.2.13-py2.py3-none-any.whl", hash = "sha256:3da69048e4540d84af32131829ff948f1e022c1c6bdb8d6102117aac784f6859"},
+    {file = "wcwidth-0.2.13.tar.gz", hash = "sha256:72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5"},
+]
+
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11,<3.13"
-content-hash = "0ed1bf112e210a9d006f4ba3278ed30353a81045dac283c18880f463aee0a046"
+content-hash = "989a660fcf81feba1d35e0cd3b3fcc8f7bb23a5dffd0b9515419ddf2bd4b5943"
