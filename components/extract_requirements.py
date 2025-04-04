@@ -4,7 +4,7 @@ from shared.helpers import get_client, wait_for_job, download_artifact
 from shared.constants import CAMEO_MODEL_ID, REQ_FILE_NAME
 
 
-def extract_requirements(client: Client):
+def extract_requirements():
   print('Starting Cameo model extraction ...')
   job = client.add_job(model_id = CAMEO_MODEL_ID,
                        function = '@istari:extract',
