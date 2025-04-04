@@ -1,7 +1,5 @@
 import sys
-from istari import Client, Configuration
 
-sys.path.insert(0, '.')
 from shared.helpers import get_client, wait_for_job, download_artifact
 from shared.constants import CAMEO_MODEL_ID, REQ_FILE_NAME
 
