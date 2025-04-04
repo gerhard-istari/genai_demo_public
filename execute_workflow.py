@@ -45,12 +45,14 @@ while True:
         param_obj_name = param_obj['name']
         bold_param_name = format_str(param_obj_name, 4)
         while True:
-          param_obj['value'] = input(f"Enter new value for parameter {bold_param_name} ({req_obj['bounds']}): ")
+          req_bnds = req_obj['bounds']
+          param_obj['value'] = input(f"Enter new value for parameter {bold_param_name} ({req_bnds}): ")
           if check_requirement(param_obj, req_obj):
             update_params[param_obj_name] = param_obj['value']
             break
           else:
-            print('Value does not satisfy requirement')
+            err_msg = format_str('Value does not satisfy requirement', 31)
+            print(f"{err_msg}: ({req_bnds})")
 
     if len(update_params) > 0:
       with open(UPDATE_PARAM_FILE_NAME, 'w') as fout:

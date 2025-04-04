@@ -7,9 +7,11 @@ from istari_digital_client.openapi_client.models.job_status_name import JobStatu
 def get_client():
   registry_url = 'https://fileservice-v2.dev2.istari.app/'
   registry_auth_token = 'iM8CeWDous_KE8dsi_4-goI8oMMig2Gl_64_0gCMOYkZ_NAu0eEgsDGSvP69cIneLIPYR1g'
+  demo_reg_url = 'https://fileservice-v2.demo.istari.app/'
+  demo_reg_auth_token = 'LF-6ZetnVKHLH0zG-CuSWWcyav0gWv7o39ab51gtXyA1qjerMfpcWuRDnxdZnEFX4lrt8Ew'
   configuration = Configuration(
-      registry_url=registry_url,
-      registry_auth_token=registry_auth_token,
+      registry_url=demo_reg_url,
+      registry_auth_token=demo_reg_auth_token,
   )
 
   return Client(config = configuration)
@@ -23,7 +25,8 @@ def wait_for_job(job) -> Job:
     sleep(1)
     job = client.get_job(job.id)
     print(empty_str, end="\r")
-    print(f"Job Status: {job.status.name}", end="\r")
+    job_stat = format_str(job.status.name, 1)
+    print(f"Job Status: {job_stat}", end="\r")
 
   print(empty_str, end="\r")
   return job

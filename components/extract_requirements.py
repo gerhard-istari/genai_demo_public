@@ -17,8 +17,8 @@ def extract_requirements(client: Client):
   #print(f"Job Complete [{job.status.name}]")
 
   print("Downloading requirements artifact ...")
-  download_artifact(CAMEO_MODEL_ID,
-                    REQ_FILE_NAME)
+  #download_artifact(CAMEO_MODEL_ID,
+  #                  REQ_FILE_NAME)
   print('Requirements artifact downloaded')
 
 
