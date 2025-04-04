@@ -37,9 +37,10 @@ while True:
   if fail_count > 0:
     ans = get_input('Update failing CAD Parameter values (y,[n])? ',
                     ['y', 'n', 'yes', 'no', ''])
+    update_params = {}
     if ans.startswith('y'):
       params_obj = {}
-      params_obj['parameters'] = update_params = {}
+      params_obj['parameters'] = update_params
       for param_req in fail_param_reqs:
         param_obj, req_obj = param_req
         param_obj_name = param_obj['name']
@@ -59,3 +60,4 @@ while True:
         json.dump(params_obj, fout)
 
       update_parameters(client)
+    else: break

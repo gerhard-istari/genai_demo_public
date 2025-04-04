@@ -2,17 +2,13 @@ from time import sleep
 
 from istari_digital_client import Client, Configuration, Job
 from istari_digital_client.openapi_client.models.job_status_name import JobStatusName
+from shared.constants import REG_URL, REG_AUTH_TOKEN
 
 
 def get_client():
-  registry_url = 'https://fileservice-v2.dev2.istari.app/'
-  registry_auth_token = 'iM8CeWDous_KE8dsi_4-goI8oMMig2Gl_64_0gCMOYkZ_NAu0eEgsDGSvP69cIneLIPYR1g'
-  demo_reg_url = 'https://fileservice-v2.demo.istari.app/'
-  demo_reg_auth_token = 'LF-6ZetnVKHLH0zG-CuSWWcyav0gWv7o39ab51gtXyA1qjerMfpcWuRDnxdZnEFX4lrt8Ew'
   configuration = Configuration(
-      registry_url=demo_reg_url,
-      registry_auth_token=demo_reg_auth_token,
-  )
+      registry_url=REG_URL,
+      registry_auth_token=REG_AUTH_TOKEN)
 
   return Client(config = configuration)
 
