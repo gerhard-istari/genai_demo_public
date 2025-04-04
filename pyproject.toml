@@ -10,6 +10,7 @@ python = "^3.11,<3.13"
 pydantic = "^2.7.0"
 argparse = "^1.4.0"
 prettytable = "=3.16.0"
+dotenv = "=0.9.9"
 istari-digital-client = "6.4.0"
 
 [tool.poetry.group.dev.dependencies]
