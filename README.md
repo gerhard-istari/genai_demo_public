@@ -27,12 +27,16 @@ lm_genai/
 ## Prerequisites
 • Python 3.6+
 Ensure you have Python installed. You can download it from python.org.
-• Dependencies
-If a requirements.txt file exists in the repository, install the necessary Python packages using:
 
-`pip install -r requirements.txt`
+### Dependencies
 
-Otherwise, ensure that any libraries used within the components and shared modules are installed.
+Start your venv
+
+To install dependancies: 
+`poetry install`
+
+
+
 
 ## Running the Program
 1.	Navigate to the Program Directory
