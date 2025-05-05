@@ -13,3 +13,7 @@ CAMEO_MODEL_ID = os.getenv('CAMEO_MODEL_ID')
 REQ_FILE_NAME = 'requirements.json'
 PARAM_FILE_NAME = 'parameters.json'
 UPDATE_PARAM_FILE_NAME = 'update_parameters.json'
+
+GREEN_COLOR = 32
+RED_COLOR = 31
+BOLD_FORMAT = 1

@@ -1,9 +1,11 @@
 from time import sleep
 
-from istari_digital_client import Client, Configuration, Job
+from istari_digital_client import Client, Configuration, Job, Model
 from istari_digital_client.openapi_client.models.job_status_name import JobStatusName
 from shared.constants import REG_URL, REG_AUTH_TOKEN
 
+
+job_list = []
 
 def get_client():
   configuration = Configuration(
@@ -11,6 +13,17 @@ def get_client():
       registry_auth_token=REG_AUTH_TOKEN)
 
   return Client(config = configuration)
+
+
+def submit_job(model_id: str,
+               function: str,
+               tool_name: str) -> Job:
+  client = get_client()
+  job =  client.add_job(model_id,
+                        function = function,
+                        tool_name = tool_name)
+  job_list.append(job.id)
+  return job
 
 
 def wait_for_job(job) -> Job:
@@ -24,13 +37,60 @@ def wait_for_job(job) -> Job:
     job_stat = format_str(job.status.name, 1)
     print(f"Job Status: {job_stat}", end="\r")
 
+  if job.id in job_list:
+    job_list.remove(job.id)
+
   print(empty_str, end="\r")
   return job
 
 
+def wait_for_all_jobs():
+  client = get_client()
+  for job_id in job_list:
+    job = client.get_job(job_id)
+    wait_for_job(job)
+
+
+def get_latest_revision(model_id: str) -> str:
+  client = get_client()
+  mod = client.get_model(model_id)
+  mod_revs = mod.file.revisions
+  ret_rev = None
+  for mod_rev in mod_revs:
+    if ret_rev == None or ret_rev.created < mod_rev.created:
+      ret_rev = mod_rev
+
+  return ret_rev.id
+  
+
+def wait_for_new_version(model_id: str) -> Model:
+  client = get_client()
+  empty_str = ' ' * 64
+  mod = client.get_model(model_id)
+  revs = mod.file.revisions
+  mod_name = revs[0].display_name
+  latest_rev = revs[-1]
+  rev_count = len(revs)
+  while True:
+    print(empty_str, end="\r")
+    print(f"Polling for model updates: {mod_name}",
+          end="\r")
+    sleep(5)
+    mod = client.get_model(model_id)
+    revs = mod.file.revisions
+    new_rev_count = len(revs)
+    if new_rev_count != rev_count:
+      latest_rev = revs[-1]
+      break
+
+  print(empty_str, end="\r")
+  print(f"Model update detected: {mod_name}")
+  return latest_rev
+
+
 def download_artifact(model_id: str,
                       artifact_name: str,
-                      dest_file: str = None) -> str:
+                      dest_file: str = None):
   client = get_client()
   art = None
   pg_idx = 1
@@ -82,3 +142,4 @@ def format_str(text: str,
     fmt_str += f";{effect2}"
 
   return f"{fmt_str}m{text}{FMT_PREFIX}0m"
+
