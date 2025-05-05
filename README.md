@@ -9,15 +9,17 @@ The repository is organized as follows:
 ```
 lm_genai/
 └── genai_demo/
-    ├── execute_workflow.py
-    ├── components/
-    │   ├── extract_requirements.py
-    │   ├── extract_parameters.py
-    │   ├── update_parameters.py
-    │   └── validate_requirements.py
-    └── shared/
-        ├── helpers.py
-        └── constants.py
+    ├── src
+    │   ├── execute_workflow.py
+    │   ├── components/
+    │   │   ├── extract_requirements.py
+    │   │   ├── extract_parameters.py
+    │   │   ├── update_parameters.py
+    │   │   └── validate_requirements.py
+    │   └── shared/
+    │       ├── helpers.py
+    │       └── constants.py
+    ├── test
 ```
 
 • execute_workflow.py – The main script that runs the workflow.
