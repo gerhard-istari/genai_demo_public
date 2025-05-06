@@ -67,6 +67,7 @@ def automated(client: Client):
 
 
 def interactive(client: Client):
+  print('[DEBUG] entered interactive')
   cad_mod_id = CAD_MODEL_ID
 
   print('Retrieving system requirements ...')
@@ -76,6 +77,7 @@ def interactive(client: Client):
                extract_requirements)
   
   while True:
+    print('[DEBUG] interactive loop iteration')
     print('Retrieving CAD parameters ...')
     get_artifact(client,
                  cad_mod_id,
@@ -113,6 +115,7 @@ def interactive(client: Client):
           while True:
             req_bnds = req_obj['bounds']
             param_val = param_obj['value'] = input(f"Enter new value for parameter {bold_param_name} ({req_bnds}): ").strip()
+            print(f"[DEBUG] param_val type: {type(param_val)}, value: {param_val}")
             if re.search(r"[a-z,A-Z]+$", param_val) == None:
               err_msg = format_str('No units specified', 
                                    RED_COLOR)
@@ -160,6 +163,7 @@ def get_artifact(client: Client,
                  mod_id: str,
                  art_file_name: str,
                  extract_function):
+  print('[DEBUG] entered get_artifact')
   print('Searching for artifact ...')
   try:
     download_artifact(mod_id,
