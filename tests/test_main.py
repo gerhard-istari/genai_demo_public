@@ -2,6 +2,10 @@ import pytest
 from unittest.mock import MagicMock, patch, call
 from genai_demo.__main__ import automated, interactive
 from itertools import chain, repeat
+from istari_digital_client.models import JobStatusName
+from unittest.mock import mock_open
+import builtins
+import io
 
 @pytest.fixture
 def mock_client():
@@ -94,7 +98,6 @@ def test_interactive_happy_path():
         # Use a MagicMock for the client
         mock_client = MagicMock()
         # Capture printed output
-        import io, sys
         captured = io.StringIO()
         sys_stdout = sys.stdout
         sys.stdout = captured
@@ -251,9 +254,34 @@ def test_automated_high_res():
 def test_minimal_interactive_import_and_call():
     print("[DEBUG] test_minimal_interactive_import_and_call started")
     mock_client_instance = make_mock_client()
+    mock_job = mock_client_instance.add_job.return_value
+    mock_job.status = MagicMock(name='status')
+    mock_job.status.name = JobStatusName.COMPLETED
+    mock_client_instance.get_job.return_value = mock_job
+    def fake_wait_for_job(job):
+        job.status.name = JobStatusName.COMPLETED
+        return job
+    # Minimal valid JSON for requirements and parameters
+    minimal_parameters_json = '{"parameters": [{"name": "foo", "value": "15"}]}'
+    minimal_requirements_json = '{"requirements": [{"qualified_name": "req1", "bounds": "[10; 20]"}]}'
+    def open_side_effect(file, mode='r', *args, **kwargs):
+        print(f"[DEBUG] open_side_effect: file={file}, mode={mode}")
+        if file == "parameters.json" and 'r' in mode:
+            print(f"[DEBUG] open_side_effect: returning minimal_parameters_json")
+            return io.StringIO(minimal_parameters_json)
+        if file == "requirements.json" and 'r' in mode:
+            print(f"[DEBUG] open_side_effect: returning minimal_requirements_json")
+            return io.StringIO(minimal_requirements_json)
+        return builtins.open_orig(file, mode, *args, **kwargs)
+    if not hasattr(builtins, 'open_orig'):
+        builtins.open_orig = builtins.open
     with patch("genai_demo.shared.helpers.get_client", return_value=mock_client_instance), \
          patch("genai_demo.__main__.get_input", return_value="y"), \
-         patch("genai_demo.__main__.input", return_value="15"):
+         patch("genai_demo.__main__.input", return_value="15"), \
+         patch("genai_demo.shared.helpers.wait_for_job", side_effect=fake_wait_for_job), \
+         patch("genai_demo.shared.helpers.download_artifact", lambda *a, **kw: None), \
+         patch("genai_demo.components.extract_parameters.download_artifact", lambda *a, **kw: None), \
+         patch("builtins.open", side_effect=open_side_effect):
         print("[DEBUG] importing interactive at last possible moment")
         from genai_demo.__main__ import interactive
         print("[DEBUG] calling interactive")

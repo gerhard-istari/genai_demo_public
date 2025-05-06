@@ -155,6 +155,7 @@ def find_param_reqs(req_file: str,
 
   with open(param_file, 'r') as fin:
     params_obj = json.load(fin)
+    print(f"[DEBUG] find_param_reqs: loaded params_obj type: {type(params_obj)}, value: {params_obj}")
 
   for param_obj in params_obj:
     params = param_obj['parameters']
