@@ -67,3 +67,194 @@ def test_automated_interactive_happy_path(
 
     # Check that the loop exited after requirements were satisfied
     assert mock_get_failing_params.call_count == 2
+
+def test_interactive_happy_path():
+    with patch("genai_demo.__main__.get_artifact"), \
+         patch("genai_demo.__main__.find_param_reqs") as mock_find_param_reqs, \
+         patch("genai_demo.__main__.print_summary"), \
+         patch("genai_demo.__main__.check_requirement") as mock_check_requirement, \
+         patch("genai_demo.__main__.get_input") as mock_get_input, \
+         patch("genai_demo.__main__.save_params_to_input_json"), \
+         patch("genai_demo.__main__.update_parameters"), \
+         patch("genai_demo.__main__.os.remove"), \
+         patch("builtins.input") as mock_input:
+        # Minimal param/req objects
+        param_obj = {"name": "foo", "value": "5m"}
+        req_obj = {"bounds": ">= 10m"}
+        # First call: 1 failing param, second call: all pass
+        mock_find_param_reqs.side_effect = [
+            [(param_obj, req_obj)],
+            []
+        ]
+        # User says 'y' to update, then provides '10m'
+        mock_get_input.side_effect = ["y"]
+        mock_input.side_effect = ["10m"]
+        # First check fails, second passes
+        mock_check_requirement.side_effect = [False, True]
+        # Use a MagicMock for the client
+        mock_client = MagicMock()
+        # Capture printed output
+        import io, sys
+        captured = io.StringIO()
+        sys_stdout = sys.stdout
+        sys.stdout = captured
+        interactive(mock_client)
+        sys.stdout = sys_stdout
+        output = captured.getvalue()
+        # Check for key output
+        assert "Retrieving system requirements" in output
+        assert "failed requirement(s) found" in output
+        assert "Pushing updated parameter values to CAD model" in output
+        assert "CAD Parameters satisfy all associated requirements" in output
+
+def make_mock_client():
+    revision = MagicMock()
+    revision.id = "rev1"
+    revision.display_name = "Model Rev 1"
+    file = MagicMock()
+    file.revisions = [revision]
+    model = MagicMock()
+    model.file = file
+    model.name = "model_file_name"
+    art_rev_src = MagicMock()
+    art_rev_src.revision_id = "rev1"
+    art_rev = MagicMock()
+    art_rev.sources = [art_rev_src]
+    art_rev.read_bytes.return_value = b"artifact-bytes"
+    artifact = MagicMock()
+    artifact.name = "requirements.json"
+    artifact.revisions = [art_rev]
+    artifact.read_bytes.return_value = b"artifact-bytes"
+    art_list = MagicMock()
+    art_list.items = [artifact]
+    job = MagicMock()
+    job.id = "job123"
+    job.status.name = "COMPLETED"
+    client = MagicMock()
+    client.get_model.return_value = model
+    client.list_model_artifacts.return_value = art_list
+    client.add_job.return_value = job
+    client.get_job.return_value = job
+    client.update_model.return_value = None
+    return client
+
+mock_client_instance = make_mock_client()
+
+@patch("genai_demo.__main__.get_input")
+@patch("genai_demo.__main__.input")
+@patch("genai_demo.__main__.os.remove")
+@patch("genai_demo.__main__.save_params_to_input_json")
+@patch("genai_demo.__main__.update_parameters")
+@patch("genai_demo.__main__.print_summary")
+def test_interactive_high_res(
+    mock_print_summary,
+    mock_update_parameters,
+    mock_save_params_to_input_json,
+    mock_os_remove,
+    mock_input,
+    mock_get_input
+):
+    print("[DEBUG] test_interactive_high_res test started")
+    param_obj = {"name": "foo", "value": "15"}
+    req_obj = {"bounds": "[10; 20]", "qualified_name": "req1"}
+    mock_client_instance = make_mock_client()
+    mock_job = mock_client_instance.add_job.return_value
+    mock_job.status.name = "COMPLETED"
+    mock_client_instance.get_job.return_value = mock_job
+    mock_model = mock_client_instance.get_model.return_value
+    mock_model.file.revisions = [
+        type('rev', (), {'display_name': 'Model Rev 1', 'id': 'rev1'})(),
+        type('rev', (), {'display_name': 'Model Rev 2', 'id': 'rev2'})()
+    ]
+    with patch("genai_demo.shared.helpers.get_client", return_value=mock_client_instance), \
+         patch("genai_demo.__main__.get_input", log_and_passthrough("get_input", ret="y")), \
+         patch("genai_demo.__main__.input", log_and_passthrough("input", ret="15")), \
+         patch("genai_demo.__main__.find_param_reqs", side_effect=[
+            [(param_obj, req_obj)],
+            []
+         ]), \
+         patch("genai_demo.__main__.check_requirement", side_effect=[False, True]):
+        import io, sys
+        captured = io.StringIO()
+        sys_stdout = sys.stdout
+        sys.stdout = captured
+        print("[DEBUG] importing interactive just before call")
+        from genai_demo.__main__ import interactive
+        print("[DEBUG] calling interactive")
+        interactive(mock_client_instance)
+        sys.stdout = sys_stdout
+        output = captured.getvalue()
+        assert "Retrieving system requirements" in output
+        assert "failed requirement(s) found" in output
+        assert "Pushing updated parameter values to CAD model" in output
+        assert "CAD Parameters satisfy all associated requirements" in output
+        assert mock_client_instance.get_model.called
+        assert mock_client_instance.list_model_artifacts.called
+        assert mock_client_instance.add_job.called
+        assert mock_client_instance.get_job.called
+
+def log_and_passthrough(name, ret=None):
+    def wrapper(*args, **kwargs):
+        print(f"[LOG] {name} called with args={args}, kwargs={kwargs}")
+        return ret
+    return wrapper
+
+def test_automated_high_res():
+    print("[LOG] test_automated_high_res started")
+    mock_client = make_mock_client()
+    # Patch get_job and get_model to return objects that break loops
+    mock_job = mock_client.add_job.return_value
+    mock_job.status.name = "COMPLETED"
+    mock_client.get_job.return_value = mock_job
+    mock_model = mock_client.get_model.return_value
+    mock_model.file.revisions = [
+        type('rev', (), {'display_name': 'Model Rev 1', 'id': 'rev1'})(),
+        type('rev', (), {'display_name': 'Model Rev 2', 'id': 'rev2'})()
+    ]
+    with patch("time.sleep", log_and_passthrough("time.sleep")), \
+         patch("genai_demo.shared.helpers.sleep", log_and_passthrough("helpers.sleep")), \
+         patch("genai_demo.shared.helpers.get_client", return_value=mock_client), \
+         patch("genai_demo.__main__.get_input", log_and_passthrough("get_input", ret="y")), \
+         patch("builtins.input", log_and_passthrough("input", ret="10m")), \
+         patch("genai_demo.__main__.os.remove"), \
+         patch("genai_demo.__main__.save_params_to_input_json"), \
+         patch("genai_demo.__main__.update_parameters"), \
+         patch("genai_demo.__main__.get_artifact"), \
+         patch("genai_demo.__main__.find_param_reqs", side_effect=[
+             [({"name": "foo", "value": "15"}, {"bounds": "[10; 20]", "qualified_name": "req1"})],  # first loop: 1 fail
+             []                            # second loop: all pass
+         ]), \
+         patch("genai_demo.__main__.get_failing_params", side_effect=[
+             [({"name": "foo", "value": "15"}, {"bounds": "[10; 20]", "qualified_name": "req1"})],  # first loop: 1 fail
+             []                            # second loop: all pass
+         ]), \
+         patch("genai_demo.__main__.fix_failing_params", return_value=[{"name": "foo", "value": "bar"}]), \
+         patch("genai_demo.__main__.wait_for_new_version", side_effect=["new_version", KeyboardInterrupt]):
+        import io, sys
+        from genai_demo.__main__ import automated
+        captured = io.StringIO()
+        sys_stdout = sys.stdout
+        sys.stdout = captured
+        try:
+            automated(mock_client)
+        except KeyboardInterrupt:
+            pass
+        sys.stdout = sys_stdout
+        output = captured.getvalue()
+        assert "Retrieving system requirements" in output
+        assert "failed requirement(s) found" in output
+        assert "Pushing updated parameter values to CAD model" in output
+        assert "CAD Parameters satisfy all associated requirements" in output
+
+# Minimal isolation test
+
+def test_minimal_interactive_import_and_call():
+    print("[DEBUG] test_minimal_interactive_import_and_call started")
+    mock_client_instance = make_mock_client()
+    with patch("genai_demo.shared.helpers.get_client", return_value=mock_client_instance), \
+         patch("genai_demo.__main__.get_input", return_value="y"), \
+         patch("genai_demo.__main__.input", return_value="15"):
+        print("[DEBUG] importing interactive at last possible moment")
+        from genai_demo.__main__ import interactive
+        print("[DEBUG] calling interactive")
+        interactive(mock_client_instance)
