@@ -1,7 +1,7 @@
 from istari_digital_client import Client
 
 from shared.helpers import get_client, submit_job, wait_for_job, download_artifact
-from shared.constants import CAMEO_MODEL_ID, REQ_FILE_NAME
+from shared.constants import CAMEO_MODEL_ID, REQ_FILE_NAME, CAMEO_TOOL_NAME
 
 
 def extract_requirements(client: Client,
@@ -10,7 +10,7 @@ def extract_requirements(client: Client,
   print('Submitting job to extract Cameo model requirements ...')
   job = submit_job(model_id = cam_mod_id,
                    function = '@istari:extract',
-                   tool_name = 'dassault_cameo')
+                   tool_name = CAMEO_TOOL_NAME)
   print(f"Job submitted with ID: {job.id}")
   
   wait_for_job(job)

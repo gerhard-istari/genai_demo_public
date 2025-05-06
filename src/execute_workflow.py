@@ -18,10 +18,9 @@ from shared.constants import *
 def automated(client: Client):
   cad_mod_id = CAD_MODEL_ID
   cam_mod_id = CAMEO_MODEL_ID
-  CAD_MOD_FILE = 'cad_model.dassault_3dexperience_metadata'
 
   while True:
-    #cam_rev = wait_for_new_version(CAMEO_MODEL_ID)
+    cam_rev = wait_for_new_version(CAMEO_MODEL_ID)
 
     max_tries = 2
     for try_idx in range(max_tries):
@@ -60,12 +59,7 @@ def automated(client: Client):
         update_parameters(client,
                           cad_mod_id,
                           UPDATE_PARAM_FILE_NAME)
-
-        # TODO: Ideally, this will utilize model versions, but there are
-        # complications with how to access model version-specific artifacts.
-        # For now, upload new model.
-        print('Creating new version of CAD model ...')
-        cad_mod_id = create_model_copy(cad_model_id)
+        os.remove(UPDATE_PARAM_FILE_NAME)
 
 
 def interactive(client: Client):
@@ -128,12 +122,13 @@ def interactive(client: Client):
               print(f"{err_msg}: ({req_bnds})")
   
       if len(update_params) > 0:
+        print('Pushing updated parameter values to CAD model ...')
         save_params_to_input_json(update_params,
                                   UPDATE_PARAM_FILE_NAME)
         update_parameters(client,
-                          CAD_MODEL_ID,
+                          cad_mod_id,
                           UPDATE_PARAM_FILE_NAME)
-        cad_mod_id = create_model_copy(cad_mod_id)
+        os.remove(UPDATE_PARAM_FILE_NAME)
       else: break
 
 
@@ -162,7 +157,6 @@ def get_artifact(client: Client,
                  art_file_name: str,
                  extract_function):
   print('Searching for artifact ...')
-  #mod_id = get_latest_revision(mod_id)
   try:
     download_artifact(mod_id,
                       art_file_name,

@@ -3,7 +3,8 @@ import os
 
 dotenv.load_dotenv()
 
-MOD_TOOL_NAME = 'dassault_3dexperience'
+CAD_TOOL_NAME = 'dassault_3dexperience'
+CAMEO_TOOL_NAME = 'dassault_cameo'
 
 REG_URL = os.getenv('REG_URL')
 REG_AUTH_TOKEN = os.getenv('REG_AUTH_TOKEN')
