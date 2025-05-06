@@ -153,7 +153,6 @@ def download_artifact(model_id: str,
                 fout.write(art_rev.read_bytes())
               return
 
-    if art is not None: break
     pg_idx += 1
 
   raise FileNotFoundError(f"Artifact not found: {artifact_name}")
