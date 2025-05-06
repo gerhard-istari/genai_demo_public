@@ -44,13 +44,13 @@ To install dependancies:
 1.	Navigate to the Program Directory
 Open your terminal or command prompt and change directory to the genai_demo folder:
 
-`cd /path/to/your/repo/lm_genai/genai_demo`
+`cd /path/to/your/repo/genai_demo`
 
 
 2.	Run the Workflow Script
 Execute the main script by running:
 
-`python execute_workflow.py``
+`python -m genai_demo``
 
 
 3.	Follow On-Screen Prompts
