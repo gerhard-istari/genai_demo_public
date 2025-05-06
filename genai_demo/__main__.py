@@ -1,15 +1,19 @@
+"""
+This module is the entry point for the genai_demo package.
+"""
+
 import argparse
 import json
 import re
 import sys
 
 from istari_digital_client import Client
-from components.extract_requirements import extract_requirements
-from components.extract_parameters import extract_parameters
-from components.update_parameters import update_parameters
-from components.validate_requirements import print_summary, find_param_reqs, check_requirement, get_failing_params, fix_failing_params
-from shared.helpers import get_client, format_str, get_input, wait_for_new_version, download_artifact, get_latest_revision, wait_for_all_jobs
-from shared.constants import *
+from .components.extract_requirements import extract_requirements
+from .components.extract_parameters import extract_parameters
+from .components.update_parameters import update_parameters
+from .components.validate_requirements import print_summary, find_param_reqs, check_requirement, get_failing_params, fix_failing_params
+from .shared.helpers import get_client, format_str, get_input, wait_for_new_version, download_artifact, get_latest_revision, wait_for_all_jobs
+from .shared.constants import *
 
 
 #################

@@ -2,7 +2,7 @@ import json
 import re
 from prettytable import PrettyTable
 from enum import Enum, auto
-from shared.helpers import format_str
+from ..shared.helpers import format_str
 
 
 class BoundType(Enum):
