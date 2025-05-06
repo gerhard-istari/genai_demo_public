@@ -50,7 +50,7 @@ Open your terminal or command prompt and change directory to the genai_demo fold
 2.	Run the Workflow Script
 Execute the main script by running:
 
-`python -m genai_demo``
+`python -m genai_demo`
 
 
 3.	Follow On-Screen Prompts
@@ -59,6 +59,10 @@ The script will:
 	• Validate parameter values against the requirements.
 	• If any parameter fails to meet its requirement, you will be prompted to update the value.
 Simply follow the instructions in your terminal to input new values where necessary.
+
+## Testing
+
+`poetry run pytest --cov=genai_demo`
 
 ## Configuration
 • Client Setup
