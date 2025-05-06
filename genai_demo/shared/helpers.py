@@ -2,7 +2,7 @@ from time import sleep
 
 from istari_digital_client import Client, Configuration, Job, Model
 from istari_digital_client.models import JobStatusName
-from shared.constants import REG_URL, REG_AUTH_TOKEN
+from .constants import REG_URL, REG_AUTH_TOKEN
 
 
 job_list = []

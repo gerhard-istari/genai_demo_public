@@ -3,7 +3,6 @@ name = "genai_demo"
 version = "1.0.0"
 description = "Demonstration workflow for Lockheed generative AI"
 authors = ["Gerhard Stoeckel <171275975+gerhard-istari@users.noreply.github.com>"]
-package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11,<3.13"
@@ -23,6 +22,7 @@ autoflake = "^2.3.1"
 mypy = "^1.10.0"
 isort = "^5.13.2"
 poethepoet = "^0.26.1"
+pytest-cov = "^6.1.1"
 
 [[tool.poetry.source]]
 name = "istari"
