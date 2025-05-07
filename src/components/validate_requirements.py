@@ -82,7 +82,7 @@ class Bounds():
   def parse_bnd_str(self,
                     bnd_str: str):
     bnd_str = bnd_str.strip()
-    m = re.search(r"^\[\s*([^;]+)\s*;\s*([^;]+)\s*\]$",
+    m = re.search(r"^(?:\[)+\s*([^;]+)\s*;\s*([^\]]+)\s*(?:\])+$",
                   bnd_str)
     if not m is None:
       self.type = BoundType.RANGE
@@ -160,11 +160,11 @@ def find_param_reqs(req_file: str,
     params = param_obj['parameters']
     if not params is None:
       for param in params:
-        param_name = param['name'].split('\\')[-1]
-        param_srch_str = f"::{param_name}"
+        param_name = param['name'].split('\\')[-1].strip()
+        param_srch_str = f"{param_name}"
 
         for req_obj in reqs_obj:
-          req_name = req_obj['qualified_name']
+          req_name = req_obj['qualified_name'].strip()
           if not req_name is None and req_name.endswith(param_srch_str):
             prs.append((param, req_obj))
 
