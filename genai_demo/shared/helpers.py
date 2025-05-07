@@ -3,6 +3,7 @@ from time import sleep
 from istari_digital_client import Client, Configuration, Job, Model
 from istari_digital_client.models import JobStatusName
 from .constants import REG_URL, REG_AUTH_TOKEN
+from .debug import debug_log
 
 
 job_list = []
@@ -25,17 +26,17 @@ def submit_job(model_id: str,
                         tool_name = tool_name,
                         parameters_file = params_file)
   job_list.append(job.id)
-  print(f"[DEBUG] submit_job: created job with id={job.id}, status={getattr(job, 'status', None)}")
+  debug_log(f"submit_job: created job with id={job.id}, status={getattr(job, 'status', None)}")
   return job
 
 
 def wait_for_job(job) -> Job:
   client = get_client()
   empty_str = ' ' * 64
-  print(f"[DEBUG] wait_for_job: polling job id={job.id}, status={getattr(job, 'status', None)}")
+  debug_log(f"wait_for_job: polling job id={job.id}, status={getattr(job, 'status', None)}")
   while not job.status.name in [JobStatusName.COMPLETED, 
                                 JobStatusName.FAILED]:
-    print(f"[DEBUG] job.status.name: {job.status.name} (type: {type(job.status.name)}), JobStatusName.COMPLETED: {JobStatusName.COMPLETED} (type: {type(JobStatusName.COMPLETED)})")
+    debug_log(f"job.status.name: {job.status.name} (type: {type(job.status.name)}), JobStatusName.COMPLETED: {JobStatusName.COMPLETED} (type: {type(JobStatusName.COMPLETED)})")
     sleep(1)
     job = client.get_job(job.id)
     print(empty_str, end="\r")

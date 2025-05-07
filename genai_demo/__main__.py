@@ -14,6 +14,7 @@ from .components.update_parameters import update_parameters
 from .components.validate_requirements import print_summary, find_param_reqs, check_requirement, get_failing_params, fix_failing_params
 from .shared.helpers import get_client, format_str, get_input, wait_for_new_version, download_artifact, get_latest_revision, wait_for_all_jobs
 from .shared.constants import *
+from .shared.debug import set_debug, debug_log
 
 
 #################
@@ -67,7 +68,7 @@ def automated(client: Client):
 
 
 def interactive(client: Client):
-  print('[DEBUG] entered interactive')
+  debug_log('entered interactive')
   cad_mod_id = CAD_MODEL_ID
 
   print('Retrieving system requirements ...')
@@ -77,7 +78,7 @@ def interactive(client: Client):
                extract_requirements)
   
   while True:
-    print('[DEBUG] interactive loop iteration')
+    debug_log('interactive loop iteration')
     print('Retrieving CAD parameters ...')
     get_artifact(client,
                  cad_mod_id,
@@ -115,7 +116,7 @@ def interactive(client: Client):
           while True:
             req_bnds = req_obj['bounds']
             param_val = param_obj['value'] = input(f"Enter new value for parameter {bold_param_name} ({req_bnds}): ").strip()
-            print(f"[DEBUG] param_val type: {type(param_val)}, value: {param_val}")
+            debug_log(f"param_val type: {type(param_val)}, value: {param_val}")
             if re.search(r"[a-z,A-Z]+$", param_val) == None:
               err_msg = format_str('No units specified', 
                                    RED_COLOR)
@@ -163,7 +164,7 @@ def get_artifact(client: Client,
                  mod_id: str,
                  art_file_name: str,
                  extract_function):
-  print('[DEBUG] entered get_artifact')
+  debug_log('entered get_artifact')
   print('Searching for artifact ...')
   try:
     download_artifact(mod_id,
@@ -186,7 +187,11 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser(prog='GenAI Demo')
   parser.add_argument('--poll',
                       action='store_true')
+  parser.add_argument('--debug', action='store_true')
   args = parser.parse_args()
+
+  from .shared.debug import set_debug, debug_log
+  set_debug(args.debug)
 
   client = get_client()
 
