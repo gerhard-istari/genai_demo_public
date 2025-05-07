@@ -53,6 +53,8 @@ def test_parameter_and_bounds_branches():
         b.is_satisfied(1)
     b = Bounds("= 3")
     assert b.get_lower() == 3 and b.get_upper() == 3
+    with pytest.raises(TypeError):
+        b.get_nearest_passing_value(0)
     # get_nearest_passing_value branches
     b = Bounds("[1;2]")
     b.get_nearest_passing_value(0.5)
@@ -67,7 +69,8 @@ def test_parameter_and_bounds_branches():
     with pytest.raises(TypeError):
         b.get_nearest_passing_value(0)
     b = Bounds("= 3")
-    b.get_nearest_passing_value(0)
+    with pytest.raises(TypeError):
+        b.get_nearest_passing_value(0)
     # parse_bnd_str error case
     b = Bounds("")
     with pytest.raises(TypeError):

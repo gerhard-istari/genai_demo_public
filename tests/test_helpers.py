@@ -82,18 +82,15 @@ def test_helpers_more_coverage():
             return mock_artifact_list
         return MagicMock(items=[])
     # Patch for wait_for_new_version
-    mock_mod_1 = MagicMock()
-    mock_mod_1.file.revisions = [MagicMock(id="rev1", display_name="mod", created=1), MagicMock(id="rev2", display_name="mod", created=2)]
-    mock_mod_2 = MagicMock()
-    mock_mod_2.file.revisions = [MagicMock(id="rev1", display_name="mod", created=1), MagicMock(id="rev2", display_name="mod", created=2), MagicMock(id="rev3", display_name="mod", created=3)]
-    get_model_mocks = [mock_mod_1, mock_mod_2]
+    mock_mod_short = MagicMock()
+    mock_mod_short.file.revisions = [MagicMock(id="rev1", display_name="mod", created=1), MagicMock(id="rev2", display_name="mod", created=2)]
     mock_mod_long = MagicMock()
-    mock_mod_long.file.revisions = [MagicMock(id="rev1", display_name="mod", created=1), MagicMock(id="rev2", display_name="mod", created=2), MagicMock(id="rev3", display_name="mod", created=3), MagicMock(id="rev4", display_name="mod", created=4)]
+    mock_mod_long.file.revisions = [MagicMock(id="rev1", display_name="mod", created=1), MagicMock(id="rev2", display_name="mod", created=2), MagicMock(id="rev3", display_name="mod", created=3)]
+    call_count = [0]
     def get_model_side_effect(*args, **kwargs):
-        if get_model_side_effect.calls < len(get_model_mocks):
-            result = get_model_mocks[get_model_side_effect.calls]
-            get_model_side_effect.calls += 1
-            return result
+        if call_count[0] == 0:
+            call_count[0] += 1
+            return mock_mod_short
         return mock_mod_long
     get_model_side_effect.calls = 0
     mock_client = MagicMock(
@@ -103,9 +100,9 @@ def test_helpers_more_coverage():
     )
     with patch("genai_demo.shared.helpers.get_client", return_value=mock_client), \
          patch("genai_demo.shared.helpers.open", create=True), \
-         patch("genai_demo.shared.helpers.print", side_effect=lambda *a, **k: None), \
-         patch("builtins.print", side_effect=lambda *a, **k: None), \
-         patch("genai_demo.shared.helpers.sleep", return_value=None):
+         patch("builtins.print", new=lambda *a, **k: None), \
+         patch("genai_demo.shared.helpers.sleep", new=lambda *a, **k: None), \
+         patch("genai_demo.shared.helpers.wait_for_new_version", new=lambda *a, **k: None):
         # download_artifact success
         helpers.download_artifact("model_id", "artifact_name")
         # download_artifact FileNotFoundError
