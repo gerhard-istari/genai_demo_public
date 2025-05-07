@@ -1,6 +1,8 @@
 from unittest.mock import patch, MagicMock
 import pytest
 import genai_demo.shared.helpers as helpers
+import itertools
+from istari_digital_client.models import JobStatusName
 
 @pytest.mark.timeout(5)
 def test_helpers_coverage():
@@ -113,3 +115,107 @@ def test_helpers_more_coverage():
         helpers.get_latest_revision("model_id")
         # wait_for_new_version
         helpers.wait_for_new_version("model_id") 
+
+@pytest.mark.timeout(5)
+def test_submit_job_calls_client_add_job():
+    """Test that submit_job calls Client.add_job with correct arguments."""
+    with patch("genai_demo.shared.helpers.Client") as mock_client_class:
+        mock_client = MagicMock()
+        mock_client_class.return_value = mock_client
+        mock_client.add_job.return_value = MagicMock(id="job123", status=MagicMock(name="COMPLETED"))
+        result = helpers.submit_job("model_id", "function", "tool_name", "params_file")
+        mock_client.add_job.assert_called_once_with(
+            "model_id",
+            function="function",
+            tool_name="tool_name",
+            parameters_file="params_file"
+        )
+        assert result.id == "job123"
+
+@pytest.mark.timeout(5)
+def test_wait_for_job_returns_completed():
+    """Test that wait_for_job returns when job is completed."""
+    running_job = MagicMock(id="job123")
+    running_job.status.name = JobStatusName.RUNNING
+    completed_job = MagicMock(id="job123")
+    completed_job.status.name = JobStatusName.COMPLETED
+    with patch("genai_demo.shared.helpers.get_client") as mock_get_client, \
+         patch("genai_demo.shared.helpers.sleep", return_value=None):
+        mock_client = MagicMock()
+        mock_client.get_job.side_effect = itertools.chain(
+            [running_job, completed_job], itertools.repeat(completed_job)
+        )
+        mock_get_client.return_value = mock_client
+        result = helpers.wait_for_job(running_job)
+        assert result.status.name == JobStatusName.COMPLETED
+
+@pytest.mark.timeout(5)
+def test_wait_for_job_handles_failed():
+    """Test that wait_for_job returns when job is failed."""
+    running_job = MagicMock(id="job123")
+    running_job.status.name = JobStatusName.RUNNING
+    failed_job = MagicMock(id="job123")
+    failed_job.status.name = JobStatusName.FAILED
+    with patch("genai_demo.shared.helpers.get_client") as mock_get_client, \
+         patch("genai_demo.shared.helpers.sleep", return_value=None):
+        mock_client = MagicMock()
+        mock_client.get_job.side_effect = itertools.chain(
+            [running_job, failed_job], itertools.repeat(failed_job)
+        )
+        mock_get_client.return_value = mock_client
+        result = helpers.wait_for_job(running_job)
+        assert result.status.name == JobStatusName.FAILED
+
+@pytest.mark.timeout(5)
+def test_wait_for_all_jobs_returns_jobs():
+    """Test that wait_for_all_jobs returns None (side-effect only)."""
+    completed_job = MagicMock(id="job123")
+    completed_job.status.name = "COMPLETED"
+    with patch("genai_demo.shared.helpers.wait_for_job", return_value=completed_job), \
+         patch("genai_demo.shared.helpers.get_client", return_value=MagicMock()), \
+         patch("genai_demo.shared.helpers.job_list", new=["job123"]):
+        result = helpers.wait_for_all_jobs()
+        assert result is None
+
+@pytest.mark.timeout(5)
+def test_download_artifact_orig_success():
+    """Test that download_artifact_orig writes artifact bytes to file when found."""
+    mock_artifact = MagicMock(read_bytes=MagicMock(return_value=b"bytes"))
+    mock_artifact.name = "artifact_name"
+    mock_artifact_list = MagicMock(items=[mock_artifact])
+    mock_client = MagicMock(list_model_artifacts=MagicMock(return_value=mock_artifact_list))
+    with patch("genai_demo.shared.helpers.get_client", return_value=mock_client), \
+         patch("genai_demo.shared.helpers.open", create=True) as mock_open:
+        helpers.download_artifact_orig("model_id", "artifact_name", "dest_file")
+        mock_client.list_model_artifacts.assert_called_once_with("model_id", page=1)
+        assert mock_artifact.read_bytes.called
+        assert mock_open.called
+
+@pytest.mark.timeout(5)
+def test_download_artifact_orig_raises_when_not_found():
+    """Test that download_artifact_orig raises FileNotFoundError if artifact is missing."""
+    mock_artifact_list = MagicMock(items=[])
+    mock_client = MagicMock(list_model_artifacts=MagicMock(return_value=mock_artifact_list))
+    with patch("genai_demo.shared.helpers.get_client", return_value=mock_client):
+        with pytest.raises(FileNotFoundError):
+            helpers.download_artifact_orig("model_id", "artifact_name", "dest_file")
+
+@pytest.mark.timeout(5)
+def test_get_input_accepts_valid():
+    """Test that get_input returns valid input from user."""
+    with patch("builtins.input", return_value="y"):
+        result = helpers.get_input("msg", ["y"])
+        assert result == "y"
+
+@pytest.mark.timeout(5)
+def test_get_input_retries_until_valid():
+    """Test that get_input retries until valid input is given."""
+    with patch("builtins.input", side_effect=["n", "y"]):
+        result = helpers.get_input("msg", ["y"])
+        assert result == "y"
+
+@pytest.mark.timeout(5)
+def test_format_str_returns_string():
+    """Test that format_str returns a string."""
+    result = helpers.format_str("text", 1)
+    assert isinstance(result, str) 
