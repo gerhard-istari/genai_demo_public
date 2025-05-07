@@ -25,6 +25,10 @@ python -m genai_demo
 
 # Run in automated polling mode
 python -m genai_demo --poll
+
+# Enable debug logging (works with any mode)
+python -m genai_demo --debug
+python -m genai_demo --poll --debug
 ```
 
 ---
@@ -264,3 +268,12 @@ poetry run pytest --cov=genai_demo
 ## 👩‍💻 Contributing
 
 Pull requests and issues are welcome! See [CONTRIBUTING.md] if available.
+
+---
+
+## ⚙️ CLI Flags
+
+- `--poll`  
+  Run in automated polling mode (CI/CD, integration, or batch workflows).
+- `--debug`  
+  Enable debug logging. Prints extra information about program flow and internal state for troubleshooting.
