@@ -7,6 +7,7 @@ from unittest.mock import mock_open
 import builtins
 import io
 import sys
+from contextlib import ExitStack
 
 def log_and_passthrough(name, ret=None):
     def wrapper(*args, **kwargs):
@@ -154,76 +155,49 @@ mock_client_instance = make_mock_client()
 
 @pytest.mark.timeout(5)
 def test_interactive_high_res():
-    import io
-    from unittest.mock import MagicMock
-    minimal_parameters_json = '[{"parameters": [{"name": "foo", "value": "15"}]}]'
-    minimal_requirements_json = '[{"qualified_name": "req1", "bounds": "[10; 20]"}]'
     def open_side_effect(file, mode='r', *args, **kwargs):
+        import io, builtins
         if file == "parameters.json" and 'r' in mode:
-            return io.StringIO(minimal_parameters_json)
+            return io.StringIO('[{"parameters": [{"name": "foo", "value": "15"}]}]')
         if file == "requirements.json" and 'r' in mode:
-            return io.StringIO(minimal_requirements_json)
-        import builtins
+            return io.StringIO('[{"qualified_name": "req1", "bounds": "[10; 20]"}]')
         return builtins.open(file, mode, *args, **kwargs)
-    # Model.file.revisions
-    mock_revision1 = MagicMock()
-    mock_revision1.id = "rev1"
-    mock_revision2 = MagicMock()
-    mock_revision2.id = "rev2"
-    mock_file = MagicMock()
-    mock_file.revisions = [mock_revision1, mock_revision2]
-    mock_model = MagicMock()
-    mock_model.file = mock_file
-    # Artifact structure
-    mock_source = MagicMock()
-    mock_source.revision_id = "rev2"
-    mock_artifact_revision = MagicMock()
-    mock_artifact_revision.sources = [mock_source]
-    mock_artifact_revision.read_bytes.return_value = b"{}"
-    mock_artifact = MagicMock()
-    mock_artifact.name = "requirements.json"
-    mock_artifact.revisions = [mock_artifact_revision]
-    mock_artifact_list = MagicMock()
-    mock_artifact_list.items = [mock_artifact]
-    with patch("genai_demo.shared.helpers.get_client"), \
-         patch("genai_demo.shared.helpers.wait_for_job", return_value=MagicMock(status=MagicMock(name='status', name=JobStatusName.COMPLETED))), \
-         patch("genai_demo.components.extract_requirements.wait_for_job", return_value=MagicMock(status=MagicMock(name='status', name=JobStatusName.COMPLETED))), \
-         patch("genai_demo.components.extract_parameters.wait_for_job", return_value=MagicMock(status=MagicMock(name='status', name=JobStatusName.COMPLETED))), \
-         patch("genai_demo.shared.helpers.download_artifact", return_value=None), \
-         patch("genai_demo.components.extract_requirements.download_artifact", return_value=None), \
-         patch("genai_demo.components.extract_parameters.download_artifact", return_value=None), \
-         patch("genai_demo.components.extract_parameters.sleep", return_value=None), \
-         patch("time.sleep", return_value=None), \
-         patch("genai_demo.__main__.get_input", return_value="y"), \
-         patch("genai_demo.__main__.input", return_value="15m"), \
-         patch("genai_demo.__main__.find_param_reqs", side_effect=[
-            [( {"name": "foo", "value": "15"}, {"bounds": "[10; 20]", "qualified_name": "req1"})],
-            []
-         ]), \
-         patch("genai_demo.__main__.check_requirement", side_effect=[False, True]), \
-         patch("genai_demo.__main__.open", side_effect=open_side_effect), \
-         patch("istari_digital_client.Client.get_model", return_value=MagicMock(file=MagicMock(read_bytes=MagicMock(return_value=b"")), name="model_file_name")), \
-         patch("istari_digital_client.Client.list_model_artifacts", return_value=mock_artifact_list), \
-         patch("istari_digital_client.Client.add_job", return_value=MagicMock()), \
-         patch("istari_digital_client.Client.get_job", return_value=MagicMock()), \
-         patch("istari_digital_client.Client.update_model", return_value=None):
+    # Helper for completed job mock
+    def completed_job_mock():
+        job = MagicMock()
+        status = MagicMock()
+        status.name = JobStatusName.COMPLETED
+        job.status = status
+        return job
+    patches = [
+        patch("genai_demo.shared.helpers.get_client"),
+        patch("genai_demo.__main__.get_input", return_value="y"),
+        patch("genai_demo.__main__.input", return_value="15m"),
+        patch("genai_demo.__main__.find_param_reqs", return_value=[({"name": "foo", "value": "15"}, {"bounds": "[10; 20]", "qualified_name": "req1"})]),
+        patch("genai_demo.__main__.check_requirement", side_effect=[False, True, True, True, True, True, True, True, True, True]),
+        patch("genai_demo.__main__.open", side_effect=open_side_effect),
+        patch("istari_digital_client.Client.get_model", return_value=MagicMock(file=MagicMock(read_bytes=MagicMock(return_value=b"artifact-bytes")), name="model_file_name")),
+        patch("istari_digital_client.Client.list_model_artifacts", return_value=MagicMock(items=[MagicMock(name="requirements.json", revisions=[MagicMock(sources=[MagicMock(revision_id="rev1")], read_bytes=MagicMock(return_value=b"artifact-bytes"))])])),
+        patch("istari_digital_client.Client.add_job", return_value=completed_job_mock()),
+        patch("istari_digital_client.Client.get_job", return_value=completed_job_mock()),
+        patch("istari_digital_client.Client.update_model", return_value=None),
+        patch("genai_demo.shared.helpers.wait_for_job", return_value=completed_job_mock()),
+        patch("genai_demo.components.extract_requirements.wait_for_job", return_value=completed_job_mock()),
+        patch("genai_demo.components.extract_parameters.wait_for_job", return_value=completed_job_mock()),
+        patch("genai_demo.shared.helpers.download_artifact", return_value=None),
+        patch("genai_demo.components.extract_requirements.download_artifact", return_value=None),
+        patch("genai_demo.components.extract_parameters.download_artifact", return_value=None),
+        patch("genai_demo.components.extract_parameters.sleep", return_value=None),
+        patch("time.sleep", return_value=None),
+        patch("genai_demo.components.update_parameters.submit_job", return_value=completed_job_mock()),
+        patch("genai_demo.components.update_parameters.wait_for_job", return_value=completed_job_mock()),
+        patch("genai_demo.__main__.update_parameters", lambda *a, **k: None),
+    ]
+    with ExitStack() as stack:
+        for p in patches:
+            stack.enter_context(p)
         from genai_demo.__main__ import interactive
         interactive(MagicMock())
-    # --- Temporarily commented out for debugging: capture and assert output ---
-    # import io, sys
-    # captured = io.StringIO()
-    # sys_stdout = sys.stdout
-    # sys.stdout = captured
-    # ...
-    # sys.stdout = sys_stdout
-    # output = captured.getvalue()
-    # print("[DEBUG] captured output:")
-    # print(output)
-    # assert "Retrieving system requirements" in output
-    # assert "failed requirement(s) found" in output
-    # assert "Pushing updated parameter values to CAD model" in output
-    # assert "CAD Parameters satisfy all associated requirements" in output
-    # --- End temporary debugging comment block ---
 
 @pytest.mark.timeout(5)
 def test_automated_high_res():
@@ -256,7 +230,8 @@ def test_automated_high_res():
              []                            # second loop: all pass
          ]), \
          patch("genai_demo.__main__.fix_failing_params", return_value=[{"name": "foo", "value": "bar"}]), \
-         patch("genai_demo.__main__.wait_for_new_version", side_effect=["new_version", KeyboardInterrupt]):
+         patch("genai_demo.__main__.wait_for_new_version", side_effect=["new_version", KeyboardInterrupt]), \
+         patch("genai_demo.__main__.check_requirement", side_effect=[False, True, True, True, True, True, True, True, True, True]):
         import io, sys
         from genai_demo.__main__ import automated
         captured = io.StringIO()
@@ -277,40 +252,45 @@ def test_automated_high_res():
 
 @pytest.mark.timeout(5)
 def test_minimal_interactive_import_and_call():
-    print("[DEBUG] test_minimal_interactive_import_and_call started")
-    mock_client_instance = make_mock_client()
-    mock_job = mock_client_instance.add_job.return_value
-    mock_job.status = MagicMock(name='status')
-    mock_job.status.name = JobStatusName.COMPLETED
-    mock_client_instance.get_job.return_value = mock_job
-    def fake_wait_for_job(job):
-        job.status.name = JobStatusName.COMPLETED
-        return job
-    # Minimal valid JSON for requirements and parameters
-    minimal_parameters_json = '[{"parameters": [{"name": "foo", "value": "15"}]}]'
-    minimal_requirements_json = '[{"qualified_name": "req1", "bounds": "[10; 20]"}]'
-    import io
     def open_side_effect(file, mode='r', *args, **kwargs):
-        print(f"[DEBUG] open_side_effect: file={file}, mode={mode}")
+        import io, builtins
         if file == "parameters.json" and 'r' in mode:
-            print(f"[DEBUG] open_side_effect: returning minimal_parameters_json")
-            return io.StringIO(minimal_parameters_json)
+            return io.StringIO('[{"parameters": [{"name": "foo", "value": "15"}]}]')
         if file == "requirements.json" and 'r' in mode:
-            print(f"[DEBUG] open_side_effect: returning minimal_requirements_json")
-            return io.StringIO(minimal_requirements_json)
-        import builtins
+            return io.StringIO('[{"qualified_name": "req1", "bounds": "[10; 20]"}]')
         return builtins.open(file, mode, *args, **kwargs)
-    with patch("genai_demo.shared.helpers.get_client", return_value=mock_client_instance), \
-         patch("genai_demo.__main__.get_input", return_value="y"), \
-         patch("genai_demo.__main__.input", return_value="15m"), \
-         patch("genai_demo.shared.helpers.wait_for_job", return_value=MagicMock(status=MagicMock(name='status', name=JobStatusName.COMPLETED))), \
-         patch("genai_demo.shared.helpers.download_artifact", lambda *a, **kw: None), \
-         patch("genai_demo.components.extract_parameters.download_artifact", lambda *a, **kw: None), \
-         patch("genai_demo.__main__.open", side_effect=open_side_effect), \
-         patch("istari_digital_client.Client.list_model_artifacts", return_value=MagicMock(items=[MagicMock(name="requirements.json", revisions=[MagicMock(sources=[MagicMock(revision_id="rev1")], read_bytes=MagicMock(return_value=b"artifact-bytes"))])])), \
-         patch("istari_digital_client.Client.get_model", return_value=MagicMock(file=MagicMock(read_bytes=MagicMock(return_value=b"")), name="model_file_name")), \
-         patch("istari_digital_client.Client.update_model", return_value=None):
-        print("[DEBUG] importing interactive at last possible moment")
+    def completed_job_mock():
+        job = MagicMock()
+        status = MagicMock()
+        status.name = JobStatusName.COMPLETED
+        job.status = status
+        return job
+    patches = [
+        patch("genai_demo.shared.helpers.get_client", return_value=MagicMock()),
+        patch("genai_demo.__main__.get_input", return_value="y"),
+        patch("genai_demo.__main__.input", return_value="15m"),
+        patch("genai_demo.__main__.find_param_reqs", return_value=[({"name": "foo", "value": "15"}, {"bounds": "[10; 20]", "qualified_name": "req1"})]),
+        patch("genai_demo.__main__.check_requirement", side_effect=[False, True, True, True, True, True, True, True, True, True]),
+        patch("genai_demo.__main__.open", side_effect=open_side_effect),
+        patch("istari_digital_client.Client.get_model", return_value=MagicMock(file=MagicMock(read_bytes=MagicMock(return_value=b"artifact-bytes")), name="model_file_name")),
+        patch("istari_digital_client.Client.list_model_artifacts", return_value=MagicMock(items=[MagicMock(name="requirements.json", revisions=[MagicMock(sources=[MagicMock(revision_id="rev1")], read_bytes=MagicMock(return_value=b"artifact-bytes"))])])),
+        patch("istari_digital_client.Client.add_job", return_value=completed_job_mock()),
+        patch("istari_digital_client.Client.get_job", return_value=completed_job_mock()),
+        patch("istari_digital_client.Client.update_model", return_value=None),
+        patch("genai_demo.shared.helpers.wait_for_job", return_value=completed_job_mock()),
+        patch("genai_demo.components.extract_requirements.wait_for_job", return_value=completed_job_mock()),
+        patch("genai_demo.components.extract_parameters.wait_for_job", return_value=completed_job_mock()),
+        patch("genai_demo.shared.helpers.download_artifact", return_value=None),
+        patch("genai_demo.components.extract_requirements.download_artifact", return_value=None),
+        patch("genai_demo.components.extract_parameters.download_artifact", return_value=None),
+        patch("genai_demo.components.extract_parameters.sleep", return_value=None),
+        patch("time.sleep", return_value=None),
+        patch("genai_demo.components.update_parameters.submit_job", return_value=completed_job_mock()),
+        patch("genai_demo.components.update_parameters.wait_for_job", return_value=completed_job_mock()),
+        patch("genai_demo.__main__.update_parameters", lambda *a, **k: None),
+    ]
+    with ExitStack() as stack:
+        for p in patches:
+            stack.enter_context(p)
         from genai_demo.__main__ import interactive
-        print("[DEBUG] calling interactive")
-        interactive(mock_client_instance)
+        interactive(MagicMock())
