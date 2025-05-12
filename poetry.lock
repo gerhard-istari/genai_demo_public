@@ -243,19 +243,19 @@ colors = ["colorama (>=0.4.6)"]
 
 [[package]]
 name = "istari-digital-client"
-version = "7.3.6"
+version = "7.3.7"
 description = "Python client for the Istari Digital platform"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "istari_digital_client-7.3.6-py3-none-any.whl", hash = "sha256:43abcb1fa4b3a624bd6b51ebca9b1175ef7d6c23e20abc661c622617eb19be00"},
-    {file = "istari_digital_client-7.3.6.tar.gz", hash = "sha256:63ded17393bf5bedb605a804bfb2cb84cf2b8c8ce364c63aff0246a79171db54"},
+    {file = "istari_digital_client-7.3.7-py3-none-any.whl", hash = "sha256:17c80ce957bc94bbd602befad94c23b8ea40725a8a7dde6625c39c8ecdf1ad58"},
+    {file = "istari_digital_client-7.3.7.tar.gz", hash = "sha256:6c8e4ea9343175701c6a284657f877b12ad8288d920331098fa9dd56787d4dd7"},
 ]
 
 [package.dependencies]
 deprecation = ">=2.1.0,<3.0.0"
-istari-digital-core = ">=6.0.4,<7.0.0"
+istari-digital-core = ">=6.0.6,<7.0.0"
 pydantic = ">=2.9.0,<3.0.0"
 python-dateutil = ">=2.9.0.post0,<3.0.0"
 python-dotenv = ">=1.0.1,<2.0.0"
@@ -991,4 +991,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11,<3.13"
-content-hash = "7da5fe80fb2f2eca95e61880f87d6878d1108dc22cd6439b53159223310e83a3"
+content-hash = "9083d3d5f1fb942995f0993b2e051b483503b7ef4cdbea4d3e1d668b04af0c90"

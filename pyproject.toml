@@ -13,7 +13,7 @@ pytest-mock = "^3.14.0"
 argparse = "^1.4.0"
 prettytable = "=3.16.0"
 dotenv = "=0.9.9"
-istari-digital-client = "7.3.6"
+istari-digital-client = "7.3.7"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"
