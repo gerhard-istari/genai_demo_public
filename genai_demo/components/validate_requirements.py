@@ -2,7 +2,7 @@ import json
 import re
 from prettytable import PrettyTable
 from enum import Enum, auto
-from shared.helpers import format_str
+from ..shared.helpers import format_str
 
 
 class BoundType(Enum):
@@ -260,4 +260,3 @@ def fix_failing_params(param_reqs: list[tuple[dict[str, object], dict[str, objec
 
 if __name__ == '__main__':
   validate_requirements()
-

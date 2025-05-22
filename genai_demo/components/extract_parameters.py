@@ -3,8 +3,8 @@ import os
 from time import sleep
 from istari_digital_client import Client
 
-from shared.helpers import get_client, submit_job, wait_for_job, download_artifact
-from shared.constants import CAD_MODEL_ID, PARAM_FILE_NAME, CAD_TOOL_NAME
+from ..shared.helpers import get_client, submit_job, wait_for_job, download_artifact
+from ..shared.constants import CAD_MODEL_ID, PARAM_FILE_NAME, CAD_TOOL_NAME
 
 
 def extract_parameters(client: Client,

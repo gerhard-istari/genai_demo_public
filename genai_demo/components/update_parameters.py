@@ -2,8 +2,8 @@ import json
 import os
 
 from istari_digital_client import Client
-from shared.helpers import submit_job, wait_for_job
-from shared.constants import CAD_TOOL_NAME
+from ..shared.helpers import submit_job, wait_for_job
+from ..shared.constants import CAD_TOOL_NAME
 
 
 def update_parameters(client: Client,
