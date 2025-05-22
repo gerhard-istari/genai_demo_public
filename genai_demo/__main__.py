@@ -193,13 +193,9 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser(prog='GenAI Demo')
   parser.add_argument('--poll',
                       action='store_true')
-<<<<<<< HEAD
   parser.add_argument('--full_extract',
                       action='store_true')
-||||||| parent of a95327b (Implement debug logging functionality across main application and helper methods; introduce command-line argument for enabling debug mode. This enhances traceability during execution and maintains a cleaner output.)
-=======
   parser.add_argument('--debug', action='store_true')
->>>>>>> a95327b (Implement debug logging functionality across main application and helper methods; introduce command-line argument for enabling debug mode. This enhances traceability during execution and maintains a cleaner output.)
   args = parser.parse_args()
 
   from .shared.debug import set_debug, debug_log
