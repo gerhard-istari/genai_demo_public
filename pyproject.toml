@@ -13,7 +13,7 @@ pytest-mock = "^3.14.0"
 argparse = "^1.4.0"
 prettytable = "=3.16.0"
 dotenv = "=0.9.9"
-istari-digital-client = "7.3.7"
+istari_digital_client = "=7.3.7"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"
@@ -26,7 +26,7 @@ poethepoet = "^0.26.1"
 
 [[tool.poetry.source]]
 name = "istari"
-url = "https://automation.cs@istaridigital.com:cmVmdGtuOjAxOjE3NTk4NTc5ODA6UEYxS2hRZWMzRmRoRlBXOUE4cVhtelFLdE1N@istaridigital.jfrog.io/artifactory/api/pypi/main-pypi-local/simple"
+url = "https://istaridigital.jfrog.io/artifactory/api/pypi/main-pypi/simple"
 priority = "explicit"
 
 [tool.mypy]
