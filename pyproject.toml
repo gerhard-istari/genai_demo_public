@@ -24,11 +24,6 @@ mypy = "^1.10.0"
 isort = "^5.13.2"
 poethepoet = "^0.26.1"
 
-[[tool.poetry.source]]
-name = "istari"
-url = "https://istaridigital.jfrog.io/artifactory/api/pypi/main-pypi/simple"
-priority = "explicit"
-
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
