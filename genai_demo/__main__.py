@@ -11,6 +11,7 @@ from istari_digital_client import Client
 from .components.extract_requirements import extract_requirements
 from .components.extract_parameters import extract_parameters
 from .components.update_parameters import update_parameters
+from .components.extract_cad_data import extract_cad_data
 from .components.validate_requirements import print_summary, find_param_reqs, check_requirement, get_failing_params, fix_failing_params
 from .shared.helpers import get_client, format_str, get_input, wait_for_new_version, download_artifact, get_latest_revision, wait_for_all_jobs
 from .shared.constants import *
@@ -20,9 +21,11 @@ from .shared.debug import set_debug, debug_log
 #################
 ### Functions ###
 #################
-def automated(client: Client):
+def automated(client: Client,
+              full_extract: bool) -> None:
   cad_mod_id = CAD_MODEL_ID
   cam_mod_id = CAMEO_MODEL_ID
+  cad_ext_func = extract_cad_data if full_extract else extract_parameters
 
   while True:
     cam_rev = wait_for_new_version(CAMEO_MODEL_ID)
@@ -34,11 +37,12 @@ def automated(client: Client):
                    cam_mod_id,
                    REQ_FILE_NAME,
                    extract_requirements)
+
       print('Retrieving CAD parameters ...')
       get_artifact(client,
                    cad_mod_id,
                    PARAM_FILE_NAME,
-                   extract_parameters)
+                   cad_ext_func)
 
       param_reqs = find_param_reqs(REQ_FILE_NAME,
                                    PARAM_FILE_NAME)
@@ -67,7 +71,8 @@ def automated(client: Client):
         os.remove(UPDATE_PARAM_FILE_NAME)
 
 
-def interactive(client: Client):
+def interactive(client: Client,
+                full_extract: bool) -> None:
   debug_log('entered interactive')
   cad_mod_id = CAD_MODEL_ID
 
@@ -80,10 +85,11 @@ def interactive(client: Client):
   while True:
     debug_log('interactive loop iteration')
     print('Retrieving CAD parameters ...')
+    cad_ext_func = extract_cad_data if full_extract else extract_parameters
     get_artifact(client,
                  cad_mod_id,
                  PARAM_FILE_NAME,
-                 extract_parameters)
+                 cad_ext_func)
 
     param_reqs = find_param_reqs(REQ_FILE_NAME,
                                  PARAM_FILE_NAME)
@@ -187,6 +193,8 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser(prog='GenAI Demo')
   parser.add_argument('--poll',
                       action='store_true')
+  parser.add_argument('--full_extract',
+                      action='store_true')
   parser.add_argument('--debug', action='store_true')
   args = parser.parse_args()
 
@@ -197,9 +205,11 @@ if __name__ == '__main__':
 
   try:
     if args.poll:
-      automated(client)
+      automated(client,
+                args.full_extract)
     else:
-      interactive(client)
+      interactive(client,
+                  args.full_extract)
   except KeyboardInterrupt:
     print("\nWaiting for any executing jobs to complete ...")
     wait_for_all_jobs()
