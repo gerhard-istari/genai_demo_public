@@ -66,7 +66,7 @@ def test_automated_interactive_happy_path(
 
     # Run
     try:
-        automated(mock_client)
+        automated(mock_client, False)
     except KeyboardInterrupt:
         pass  # Expected to break the loop for testing
 
@@ -111,7 +111,7 @@ def test_interactive_happy_path():
         captured = io.StringIO()
         sys_stdout = sys.stdout
         sys.stdout = captured
-        interactive(mock_client)
+        interactive(mock_client, False)
         sys.stdout = sys_stdout
         output = captured.getvalue()
         # Check for key output
@@ -197,7 +197,7 @@ def test_interactive_high_res():
         for p in patches:
             stack.enter_context(p)
         from genai_demo.__main__ import interactive
-        interactive(MagicMock())
+        interactive(MagicMock(), False)
 
 @pytest.mark.timeout(5)
 def test_automated_high_res():
@@ -238,7 +238,7 @@ def test_automated_high_res():
         sys_stdout = sys.stdout
         sys.stdout = captured
         try:
-            automated(mock_client)
+            automated(mock_client, False)
         except KeyboardInterrupt:
             pass
         sys.stdout = sys_stdout
@@ -293,4 +293,4 @@ def test_minimal_interactive_import_and_call():
         for p in patches:
             stack.enter_context(p)
         from genai_demo.__main__ import interactive
-        interactive(MagicMock())
+        interactive(MagicMock(), False)
