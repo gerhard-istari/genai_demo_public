@@ -120,6 +120,8 @@ class Bounds():
       self.upper = val
       return
 
+    raise TypeError(f"Error parsing bounds: {bnd_str}")
+
   def get_nearest_passing_value(self,
                                 val: float) -> float:
     if self.is_satisfied(val):
