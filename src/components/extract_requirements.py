@@ -10,7 +10,8 @@ def extract_requirements(client: Client,
   print('Submitting job to extract Cameo model requirements ...')
   job = submit_job(model_id = cam_mod_id,
                    function = '@istari:extract',
-                   tool_name = CAMEO_TOOL_NAME)
+                   tool_name = CAMEO_TOOL_NAME,
+                   tool_ver = CAMEO_VERSION)
   print(f"Job submitted with ID: {job.id}")
   
   wait_for_job(job)
