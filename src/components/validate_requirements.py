@@ -81,8 +81,8 @@ class Bounds():
 
   def parse_bnd_str(self,
                     bnd_str: str):
-    bnd_str = bnd_str.strip()
-    m = re.search(r"^(?:\[)+\s*([^;]+)\s*;\s*([^\]]+)\s*(?:\])+$",
+    bnd_str = bnd_str.strip(' []')
+    m = re.search(r"^([^;]+)\s*;\s*([^\]]+)$",
                   bnd_str)
     if not m is None:
       self.type = BoundType.RANGE
