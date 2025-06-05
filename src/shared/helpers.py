@@ -18,11 +18,13 @@ def get_client():
 def submit_job(model_id: str,
                function: str,
                tool_name: str,
-               params_file: str = '') -> Job:
+               tool_ver: str = None,
+               params_file: str = None) -> Job:
   client = get_client()
   job =  client.add_job(model_id,
                         function = function,
                         tool_name = tool_name,
+                        tool_version = tool_ver,
                         parameters_file = params_file)
   job_list.append(job.id)
   return job
