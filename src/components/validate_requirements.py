@@ -73,7 +73,7 @@ class Bounds():
       case BoundType.GREATER_THAN_EQUAL:
         ret_val = val >= self.get_lower()
       case BoundType.EQUAL_TO:
-        ret_val = val == self.get_
+        ret_val = val == self.get_lower()
       case _:
         raise TypeError(f"Unrecognized bound type: {self.get_type()}")
 
