@@ -118,6 +118,7 @@ class Bounds():
       val = float(m.groups(1)[0])
       self.lower = val
       self.upper = val
+      self.type = BoundType.EQUAL_TO
       return
 
     raise TypeError(f"Error parsing bounds: {bnd_str}")
