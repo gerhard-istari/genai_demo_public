@@ -1,7 +1,7 @@
 from istari_digital_client import Client
 
 from shared.helpers import get_client, submit_job, wait_for_job, download_artifact
-from shared.constants import CAMEO_MODEL_ID, REQ_FILE_NAME, CAMEO_TOOL_NAME
+from shared.constants import *
 
 
 def extract_requirements(client: Client,
