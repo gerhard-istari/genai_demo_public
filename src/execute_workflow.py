@@ -22,8 +22,13 @@ def automated(client: Client,
   cam_mod_id = CAMEO_MODEL_ID
   cad_ext_func = extract_cad_data if full_extract else extract_parameters
 
+  # Execute workflow automatically on startup
+  first_run = True
   while True:
-    cam_rev = wait_for_new_version(CAMEO_MODEL_ID)
+    if first_run:
+      first_run = False
+    else:
+      cam_rev = wait_for_new_version(CAMEO_MODEL_ID)
 
     max_tries = 2
     for try_idx in range(max_tries):
